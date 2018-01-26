@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<SourceFileCollection xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Profile>Reach</Profile>
+  <Platform>Windows</Platform>
+  <Config />
+  <SourceFiles>
+    <File>/Users/59485/Projects/Tank-Game/Tank Game/Content/GreenTank.png</File>
+    <File>/Users/59485/Projects/Tank-Game/Tank Game/Content/RedTank.png</File>
+    <File>/Users/59485/Projects/Tank-Game/Tank Game/Content/wall.jpg</File>
+    <File>/Users/59485/Projects/Tank-Game/Tank Game/Content/PinkTank.png</File>
+    <File>/Users/59485/Projects/Tank-Game/Tank Game/Content/YellowTank.png</File>
+    <File>/Users/59485/Projects/Tank-Game/Tank Game/Content/Stars.png</File>
+    <File>/Users/59485/Projects/Tank-Game/Tank Game/Content/Derp.wav</File>
+    <File>/Users/59485/Projects/Tank-Game/Tank Game/Content/Derp2.wav</File>
+    <File>/Users/59485/Projects/Tank-Game/Tank Game/Content/DerpHurt.wav</File>
+    <File>/Users/59485/Projects/Tank-Game/Tank Game/Content/KamiAnger.wav</File>
+    <File>/Users/59485/Projects/Tank-Game/Tank Game/Content/KamiCharge.wav</File>
+    <File>/Users/59485/Projects/Tank-Game/Tank Game/Content/KamiHurt.wav</File>
+    <File>/Users/59485/Projects/Tank-Game/Tank Game/Content/Laser_Shoot.wav</File>
+    <File>/Users/59485/Projects/Tank-Game/Tank Game/Content/eenewDerpDeath.wav</File>
+    <File>/Users/59485/Projects/Tank-Game/Tank Game/Content/eenewKamiDeath.wav</File>
+    <File>/Users/59485/Projects/Tank-Game/Tank Game/Content/Elite1.wav</File>
+    <File>/Users/59485/Projects/Tank-Game/Tank Game/Content/EliteAnger.wav</File>
+    <File>/Users/59485/Projects/Tank-Game/Tank Game/Content/EliteDeath.wav</File>
+    <File>/Users/59485/Projects/Tank-Game/Tank Game/Content/EliteHit.wav</File>
+    <File>/Users/59485/Projects/Tank-Game/Tank Game/Content/EliteRoar.wav</File>
+    <File>/Users/59485/Projects/Tank-Game/Tank Game/Content/Explosion.wav</File>
+    <File>/Users/59485/Projects/Tank-Game/Tank Game/Content/Death2.wav</File>
+  </SourceFiles>
+</SourceFileCollection>
