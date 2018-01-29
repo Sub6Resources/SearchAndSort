@@ -1,7 +1,7 @@
 ﻿<Properties StartupConfiguration="{7B2C139D-F02B-4D22-83BB-D7D915CDC0C9}|Default">
   <MonoDevelop.Ide.Workbench ActiveDocument="SearchAndSort/StaticTank.cs">
     <Files>
-      <File FileName="SearchAndSort/Game1.cs" Line="72" Column="38" />
+      <File FileName="SearchAndSort/Game1.cs" Line="72" Column="10" />
       <File FileName="SearchAndSort/Map.cs" Line="5" Column="24" />
       <File FileName="SearchAndSort/EnemyTank.cs" Line="8" Column="29" />
       <File FileName="SearchAndSort/StaticTank.cs" Line="11" Column="38" />
@@ -15,7 +15,7 @@
       <File FileName="SearchAndSort/Program.cs" Line="3" Column="24" />
       <File FileName="SearchAndSort/Score.cs" Line="10" Column="24" />
       <File FileName="SearchAndSort/Sound.cs" Line="7" Column="24" />
-      <File FileName="SearchAndSort/Tank.cs" Line="6" Column="24" />
+      <File FileName="SearchAndSort/Tank.cs" Line="6" Column="1" />
       <File FileName="SearchAndSort/Tile.cs" Line="6" Column="24" />
     </Files>
   </MonoDevelop.Ide.Workbench>

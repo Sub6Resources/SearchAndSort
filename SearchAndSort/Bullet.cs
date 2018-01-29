@@ -57,10 +57,10 @@ namespace SearchAndSort
 				if((Rectangle.Intersect(bulletRect, new Rectangle((int)et.location.X - (et.tankTexture.Width / 2), (int)et.location.Y - (et.tankTexture.Height / 2), et.tankTexture.Width, et.tankTexture.Height)).Width != 0) && et.alive && player != 100)
 				{
 					et.Hit();
-					//game.scoreManager.addScore(player-1, pointsOnHit);
+					game.scoreManager.addScore(player-1, pointsOnHit);
 					if (!et.alive)
 					{
-						//game.scoreManager.addScore(player-1, pointsOnKill);
+						game.scoreManager.addScore(player-1, pointsOnKill);
 					}
 					this.Die();
 				}
@@ -68,19 +68,19 @@ namespace SearchAndSort
             foreach(Tank tank in game.playerTanks) {
                 if (tank.player != this.player && Rectangle.Intersect(bulletRect, tank.tankRect).Width != 0 && tank.alive) {
                     tank.Hit();
-                    //game.scoreManager.addScore(player, pointsOnHit);
+                    game.scoreManager.addScore(player - 1, pointsOnHit);
                     if(!tank.alive) {
-                        //game.scoreManager.addScore(player, pointsOnKill);
+                        game.scoreManager.addScore(player - 1, pointsOnKill);
                     }
                     this.Die();
                 }
                 if (player == 100 && Rectangle.Intersect(bulletRect, tank.tankRect).Width != 0 && tank.alive)
                 {
                     tank.Hit();
-                    //game.scoreManager.addScore(0, pointsOnHit);
+                    game.scoreManager.addScore(0, pointsOnHit);
                     if (!tank.alive)
                     {
-                        //game.scoreManager.addScore(0, pointsOnKill);
+                        game.scoreManager.addScore(0, pointsOnKill);
                     }
                     this.Die();
                 }

@@ -127,6 +127,12 @@ namespace SearchAndSort
                         cancelOutCollisionOverlap(collision);
                     }
                 }
+                foreach (Tank tank in game.playerTanks) {
+                    Collision collision = tank.isColliding(tankRect);
+                    if (tank != this && collision.depth > 0) {
+                        cancelOutCollisionOverlap(collision);
+                    }
+                }
                 foreach (Tile[] tiles in game.map.map)
                 {
                     foreach (Tile tile in tiles)
@@ -166,7 +172,7 @@ namespace SearchAndSort
             if (state.IsKeyDown(mineKey) && mineDelay <= 0)
             {
                 mineDelay = MINE_DELAY;
-                game.landmines.Add(new Landmine(game, new Rectangle((int)location.X, (int)location.Y, 20, 20), Vector2.Zero, Color.Orange, 1, 0, whiteRectangle));
+                game.landmines.Add(new Landmine(game, new Rectangle((int)location.X, (int)location.Y, 20, 20), Vector2.Zero, Color.Orange, player, 0, whiteRectangle));
             }
 
 

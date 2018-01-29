@@ -24,16 +24,9 @@ namespace SearchAndSort
         public override void Die()
         {
             base.Die();
-            if(player == 1)
-            {
-                theExplosion = new Explosion(new Vector2(this.bulletRect.X, this.bulletRect.Y), this.game, 2, this.rectangleTexture, Color.Orange);
-                game.scoreManager.addScore(0, 1000);
-            }
-            if (player == 2)
-            {
-                theExplosion = new Explosion(new Vector2(this.bulletRect.X, this.bulletRect.Y), this.game, 1, this.rectangleTexture, Color.Orange);
-                game.scoreManager.addScore(1, 1000);
-            }
+
+            game.scoreManager.addScore(player - 1, 1000);
+            theExplosion = new Explosion(new Vector2(this.bulletRect.X, this.bulletRect.Y), this.game, player, this.rectangleTexture, Color.Orange);
         }
         public override void Update()
         {
