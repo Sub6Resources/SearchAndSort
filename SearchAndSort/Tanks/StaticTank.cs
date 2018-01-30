@@ -33,8 +33,7 @@ namespace SearchAndSort
 
         public override void Move(KeyboardState state)
         {
-            //AI CODE---------------------------------------------THIS IS A BASIC AI TANK--------------------------------------------------------------------------------
-            rotation = (float) (new Random()).NextDouble();
+            //AI CODE--This Tank does not move.
         }
     }
 }

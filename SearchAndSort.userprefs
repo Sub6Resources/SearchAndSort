@@ -1,22 +1,22 @@
 ﻿<Properties StartupConfiguration="{7B2C139D-F02B-4D22-83BB-D7D915CDC0C9}|Default">
-  <MonoDevelop.Ide.Workbench ActiveDocument="SearchAndSort/StaticTank.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="SearchAndSort/Bullet.cs">
     <Files>
-      <File FileName="SearchAndSort/Game1.cs" Line="72" Column="10" />
-      <File FileName="SearchAndSort/Map.cs" Line="5" Column="24" />
-      <File FileName="SearchAndSort/EnemyTank.cs" Line="8" Column="29" />
-      <File FileName="SearchAndSort/StaticTank.cs" Line="11" Column="38" />
-      <File FileName="SearchAndSort/Bullet.cs" Line="6" Column="24" />
-      <File FileName="SearchAndSort/Collision.cs" Line="7" Column="24" />
+      <File FileName="SearchAndSort/Map.cs" Line="35" Column="18" />
+      <File FileName="SearchAndSort/Tanks/EnemyTank.cs" Line="1" Column="1" />
+      <File FileName="SearchAndSort/Tanks/StaticTank.cs" Line="33" Column="1" />
+      <File FileName="SearchAndSort/Bullet.cs" Line="47" Column="14" />
+      <File FileName="SearchAndSort/Collision.cs" Line="13" Column="22" />
       <File FileName="SearchAndSort/Explosion.cs" Line="6" Column="24" />
-      <File FileName="SearchAndSort/KamikazeTank.cs" Line="8" Column="24" />
-      <File FileName="SearchAndSort/Landmine.cs" Line="5" Column="24" />
+      <File FileName="SearchAndSort/Tanks/KamikazeTank.cs" Line="1" Column="1" />
+      <File FileName="SearchAndSort/Landmine.cs" Line="29" Column="149" />
       <File FileName="SearchAndSort/Particle.cs" Line="10" Column="24" />
       <File FileName="SearchAndSort/ParticleSpray.cs" Line="6" Column="24" />
       <File FileName="SearchAndSort/Program.cs" Line="3" Column="24" />
       <File FileName="SearchAndSort/Score.cs" Line="10" Column="24" />
       <File FileName="SearchAndSort/Sound.cs" Line="7" Column="24" />
-      <File FileName="SearchAndSort/Tank.cs" Line="6" Column="1" />
-      <File FileName="SearchAndSort/Tile.cs" Line="6" Column="24" />
+      <File FileName="SearchAndSort/Tanks/Tank.cs" Line="1" Column="1" />
+      <File FileName="SearchAndSort/Tile.cs" Line="49" Column="44" />
+      <File FileName="SearchAndSort/Game1.cs" Line="52" Column="13" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" />

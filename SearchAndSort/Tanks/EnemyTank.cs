@@ -9,7 +9,6 @@ namespace SearchAndSort
 
 		public float targetDirection;
 		public new bool enemy = true;
-		public List<Bullet> enemyBullets = new List<Bullet>();
 		private float delayOfFire = 3;
 		private const float FIRE_DELAY = 3;
 		
@@ -33,34 +32,16 @@ namespace SearchAndSort
 			tankRect = new Rectangle((int)location.X - (tankTexture.Width / 2), (int)location.Y - (tankTexture.Height / 2), tankTexture.Width, tankTexture.Height);
 			targetDirection = DOWN;
 		}
-		public override void Draw(SpriteBatch spriteBatch)
-		{
-			base.Draw(spriteBatch);
-			foreach (Bullet b in enemyBullets)
-			{
-				if (b != null && b.alive)
-				{
-					b.Draw(spriteBatch);
-				}
-			}
-		}
 		public override void Update(KeyboardState state, GameTime gameTime)
 		{
 			float timer = (float) gameTime.ElapsedGameTime.TotalMilliseconds / 1000;
 			delayOfFire -= timer;
 			if(delayOfFire <= 0)
 			{
-				enemyBullets.Add(Fire());
+				game.bullets.Add(Fire());
 				delayOfFire = FIRE_DELAY;
 			}
 			base.Update(state, gameTime);
-			foreach (Bullet b in enemyBullets)
-			{
-				if (b != null && b.alive)
-				{
-					b.Update();
-				}
-			}
 		}
 		public override void Move(KeyboardState state)
 		{

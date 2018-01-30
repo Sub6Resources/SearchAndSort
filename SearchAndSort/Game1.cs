@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System.Collections.Generic;
+using System;
 
 namespace SearchAndSort
 {
@@ -10,26 +11,26 @@ namespace SearchAndSort
     /// </summary>
     public class Game1 : Game
     {
-        public Map map;
+        //Graphics Stuff
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
-        Texture2D whiteRectangle;
+        Texture2D texture2d;
+
+        //Game stuff
         public List<Tank> playerTanks = new List<Tank>();
 		public List<EnemyTank> enemyTanks = new List<EnemyTank>();
         public List<Bullet> bullets = new List<Bullet>();
-        public Score scoreManager;
         public List<Landmine> landmines = new List<Landmine>();
-        Rectangle debugRect;
-        Rectangle tank2DebugRect;
+        public Map map;
+        public Score scoreManager;
+
+        //Extra game stuff
         Texture2D background;
         public Sound sound;
-
-
 
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
-            
             Content.RootDirectory = "Content";
         }
 
@@ -41,26 +42,71 @@ namespace SearchAndSort
         /// </summary>
         protected override void Initialize()
         {
-            whiteRectangle = new Texture2D(GraphicsDevice, 1, 1);
-            //UNCOMMENT NEXT THREE COMMENTS FOR FULLSCREEN
+            //Initialize generic texture
+            texture2d = new Texture2D(GraphicsDevice, 1, 1);
+            texture2d.SetData(new[] { Color.White });
+
+            //Initialize window
+            //SWITCH COMMENTS TO TOGGLE FULLSCREEN
             //graphics.PreferredBackBufferWidth = GraphicsDevice.DisplayMode.Width - GraphicsDevice.DisplayMode.Width % 48; //Makes the window size a divisor of 48 so the tiles fit more cleanly.
             //graphics.PreferredBackBufferHeight = GraphicsDevice.DisplayMode.Height - GraphicsDevice.DisplayMode.Height % 48;
             graphics.PreferredBackBufferWidth = 48 * 20;
             graphics.PreferredBackBufferHeight = 48 * 16;
             //graphics.IsFullScreen = true;
+
             graphics.ApplyChanges();
+
+            //Initialize Map
             map = new Map(this, graphics.PreferredBackBufferWidth, graphics.PreferredBackBufferHeight);
-            whiteRectangle.SetData(new[] { Color.White });
+
+            //Map
+            string exString =
+                "11111111111111111111\n" +
+                "10000000000000000001\n" +
+                "10000000000000000001\n" +
+                "10000000000000000001\n" +
+                "10000000000000000001\n" +
+                "10000000000000000001\n" +
+                "10000000000000000001\n" +
+                "10000000000000000001\n" +
+                "10000000000000000001\n" +
+                "10000000000000000001\n" +
+                "10000000000000000001\n" +
+                "10000000000000000001\n" +
+                "10000000000000000001\n" +
+                "10000000000000000001\n" +
+                "10000000000000000001\n" +
+                "11111111111111111111";
+            map.setMap(exString);
+
+            //Initialize window background
             background = Content.Load<Texture2D>("Stars");
-            playerTanks.Add(new Tank(this, "GreenTank", new Vector2(100,100), new Vector2(3, 3), 0, 1, 1f, whiteRectangle, Keys.W, Keys.A, Keys.S, Keys.D, Keys.Tab, Keys.LeftShift, Keys.Space, Keys.Q, Keys.E));
-            playerTanks.Add(new Tank(this, "RedTank", new Vector2(map.screenWidth-100, 100), new Vector2(3, 3), MathHelper.Pi, 2, 1f, whiteRectangle, Keys.Up, Keys.Left, Keys.Down, Keys.Right, Keys.Enter, Keys.RightShift, Keys.Enter, Keys.RightAlt, Keys.OemQuestion));
-			enemyTanks.Add(new EnemyTank(this, "PinkTank", new Vector2(200, 200), new Vector2(5, 5), 0, 100, 1f, whiteRectangle));
-			enemyTanks.Add(new KamikazeTank(this, "YellowTank", new Vector2(400, 400), new Vector2(3, 3), 0, 100, 1f, whiteRectangle));
-            enemyTanks.Add(new StaticTank(this, "YellowTank", new Vector2(300, 300), new Vector2(3, 3), 0, 100, 1f, whiteRectangle));
+
+            //Initialize tanks
+            playerTanks.Add(new Tank(this, "GreenTank", new Vector2(100,100), new Vector2(3, 3), 0, 1, 1f, texture2d, Keys.W, Keys.A, Keys.S, Keys.D, Keys.Tab, Keys.LeftShift, Keys.Space, Keys.Q, Keys.E));
+            playerTanks.Add(new Tank(this, "RedTank", new Vector2(map.screenWidth-100, 100), new Vector2(3, 3), MathHelper.Pi, 2, 1f, texture2d, Keys.Up, Keys.Left, Keys.Down, Keys.Right, Keys.Enter, Keys.RightShift, Keys.Enter, Keys.RightAlt, Keys.OemQuestion));
+			//enemyTanks.Add(new EnemyTank(this, "PinkTank", new Vector2(200, 200), new Vector2(5, 5), 0, 100, 1f, texture2d));
+			//enemyTanks.Add(new KamikazeTank(this, "YellowTank", new Vector2(400, 400), new Vector2(3, 3), 0, 100, 1f, texture2d));
+            //enemyTanks.Add(new StaticTank(this, "YellowTank", new Vector2(300, 300), new Vector2(3, 3), 0, 100, 1f, texture2d));
+
+            //Generate circle of static tanks
+            for (int i = 0; i < 8; i++) {
+                int centerX = graphics.PreferredBackBufferWidth / 2;
+                int centerY = graphics.PreferredBackBufferHeight / 2;
+                double angle = 45 * i * (Math.PI / 180);
+
+                int pointX = (int) Math.Round(Math.Cos(angle) * 200 + centerX);
+                int pointY = (int) Math.Round(Math.Sin(angle) * 200 + centerY);
+
+                enemyTanks.Add(new StaticTank(this, "GreenTank", new Vector2(pointX, pointY), new Vector2(3, 3), (float) (angle+Math.PI), 100, 1f, texture2d));
+            }
+            //Initialize scoring system
             scoreManager = new Score(this, 100);
-            debugRect = new Rectangle();
-            tank2DebugRect = new Rectangle();
+
+            //Initialize sound system.
             sound = new Sound(this);
+
+            //Initialize base
             base.Initialize();
         }
 
@@ -72,7 +118,6 @@ namespace SearchAndSort
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
-            
         }
 
         /// <summary>
@@ -81,7 +126,7 @@ namespace SearchAndSort
         /// </summary>
         protected override void UnloadContent()
         {
-            
+            //Eh, whatever. Maybe do this later.
         }
 
         /// <summary>
@@ -91,27 +136,27 @@ namespace SearchAndSort
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
-                Exit();
-            
-            map.Update(gameTime);
-
             KeyboardState state = Keyboard.GetState();
 
-            //Update delays
+            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || state.IsKeyDown(Keys.Escape))
+                Exit();
+
+            //Update Map
+            map.Update(gameTime);
+
+            //Update Tanks
             foreach(Tank player in playerTanks) {
-                player.updateDelays(gameTime);
                 player.Update(state, gameTime);
             }
-			foreach (EnemyTank et in enemyTanks)
+			foreach (EnemyTank enemyTank in enemyTanks)
 			{
-				et.Update(state, gameTime);
+				enemyTank.Update(state, gameTime);
 			}
-            //debugRect = new Rectangle((int)tank1.location.X-(tank1.tankTexture.Width/2), (int)tank1.location.Y-(tank1.tankTexture.Height/2), tank1.tankTexture.Width, tank1.tankTexture.Height);
-            //tank2DebugRect = new Rectangle((int)tank2.location.X - (tank2.tankTexture.Width / 2), (int)tank2.location.Y - (tank2.tankTexture.Height / 2), tank2.tankTexture.Width, tank2.tankTexture.Height);
-            foreach (Landmine lm in landmines)
+
+            //Update Game Objects
+            foreach (Landmine landmine in landmines)
             {
-                lm.Update();
+                landmine.Update();
             }
             foreach (Bullet bullet in bullets)
             {
@@ -120,6 +165,8 @@ namespace SearchAndSort
                     bullet.Update();
                 }
             }
+
+            //Update base
             base.Update(gameTime);
         }
 
@@ -130,28 +177,30 @@ namespace SearchAndSort
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.WhiteSmoke);
-            
-            // TODO: Add your drawing code here
+
             spriteBatch.Begin();
+
+            //Draw background
             spriteBatch.Draw(background, new Rectangle(0, 0, map.screenWidth, map.screenHeight), Color.White);
+
+            //Draw tanks
+            foreach (Tank player in playerTanks)
+            {
+                player.Draw(spriteBatch);
+            }
+            foreach (EnemyTank et in enemyTanks)
+            {
+                et.Draw(spriteBatch);
+            }
+
+            //Draw map
             map.Draw(spriteBatch);
-            //DEBUG DRAWS (COMMENT OUT TO TURN OFF DEBUG MODE)
-            //spriteBatch.Draw(whiteRectangle, debugRect, Color.Pink); //Tank1 DebugRect
-            //spriteBatch.Draw(whiteRectangle, tank2DebugRect, Color.Pink); //Tank2 DebugRect
+
+            //Draw game objects
             foreach (Landmine lm in landmines)
             {
                 lm.Draw(spriteBatch);
             }
-            foreach (Tank player in playerTanks) {
-                player.Draw(spriteBatch);
-            }
-			foreach (EnemyTank et in enemyTanks)
-			{
-				et.Draw(spriteBatch);
-			}
-            
-            scoreManager.Draw(spriteBatch);
-            
             foreach (Bullet bullet in bullets)
             {
                 if (bullet != null)
@@ -159,10 +208,13 @@ namespace SearchAndSort
                     bullet.Draw(spriteBatch);
                 }
             }
+
+            //Draw score
+            scoreManager.Draw(spriteBatch);
+
             spriteBatch.End();
 
             base.Draw(gameTime);
         }
     }
 }
-    

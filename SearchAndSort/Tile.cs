@@ -1,6 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
 using System;
 
 namespace SearchAndSort
@@ -9,9 +8,12 @@ namespace SearchAndSort
     {
         public const int AIR = 0;
         public const int WALL = 1;
+
         public Rectangle collisionRect;
         public Texture2D texture;
+
         public int type;
+
         public Tile(int _type, Rectangle _collisionRect, Texture2D _texture)
         {
             collisionRect = _collisionRect;
@@ -44,9 +46,8 @@ namespace SearchAndSort
             Rectangle intersect = Rectangle.Intersect(possibleCollisionRect, collisionRect);
             if (type == WALL)
             {
-                if (intersect.Width > 0 || intersect.Height > 0)
+                if (intersect.Width != 0 && intersect.Height != 0)
                 {
-                    
                     if (possibleCollisionRect.Top < collisionRect.Bottom && Math.Abs(intersect.Width) > Math.Abs(intersect.Height) && possibleCollisionRect.Y > collisionRect.Y)
                     {
                         float depth = intersect.Height;

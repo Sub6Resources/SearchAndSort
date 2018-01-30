@@ -1,7 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
-using System.Collections.Generic;
 
 namespace SearchAndSort
 {
@@ -89,9 +87,8 @@ namespace SearchAndSort
             {
                 foreach (Tile tile in tiles)
                 {
-                    if((tile.isColliding(bulletRect).depth > 0)) //If collision is not an empty collision
+                    if (Rectangle.Intersect(bulletRect, tile.collisionRect).Width > 0 && tile.type != Tile.AIR)
                     {
-                        Collision collision = tile.isColliding(bulletRect);
                         this.Die();
                     }
                 }
@@ -101,7 +98,7 @@ namespace SearchAndSort
         {
             alive = false;
             speed = Vector2.Zero;
-            color = Color.Transparent;
-    }
+            color = Color.Blue;
+        }
     }
 }

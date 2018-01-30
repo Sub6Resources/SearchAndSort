@@ -112,6 +112,10 @@ namespace SearchAndSort
         }
         public virtual void Update(KeyboardState state, GameTime gameTime)
         {
+            if (!(this is EnemyTank))
+            {
+                updateDelays(gameTime);
+            }
             if (alive)
             {
                 Move(state);
@@ -144,7 +148,6 @@ namespace SearchAndSort
                         }
                     }
                 }
-
             } else //if not alive
 			{
                 if (explosion != null)
