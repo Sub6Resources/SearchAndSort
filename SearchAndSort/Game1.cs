@@ -60,7 +60,7 @@ namespace SearchAndSort
             map = new Map(this, graphics.PreferredBackBufferWidth, graphics.PreferredBackBufferHeight);
 
             //Map
-            string exString =
+            string levelMap =
                 "11111111111111111111\n" +
                 "10000000000000000001\n" +
                 "10000000000000000001\n" +
@@ -77,7 +77,7 @@ namespace SearchAndSort
                 "10000000000000000001\n" +
                 "10000000000000000001\n" +
                 "11111111111111111111";
-            map.setMap(exString);
+            map.setMap(levelMap);
 
             //Initialize window background
             background = Content.Load<Texture2D>("Stars");
@@ -85,18 +85,21 @@ namespace SearchAndSort
             //Initialize tanks
             playerTanks.Add(new Tank(this, "GreenTank", new Vector2(100,100), new Vector2(3, 3), 0, 1, 1f, texture2d, Keys.W, Keys.A, Keys.S, Keys.D, Keys.Tab, Keys.LeftShift, Keys.Space, Keys.Q, Keys.E));
             playerTanks.Add(new Tank(this, "RedTank", new Vector2(map.screenWidth-100, 100), new Vector2(3, 3), MathHelper.Pi, 2, 1f, texture2d, Keys.Up, Keys.Left, Keys.Down, Keys.Right, Keys.Enter, Keys.RightShift, Keys.Enter, Keys.RightAlt, Keys.OemQuestion));
-			//enemyTanks.Add(new EnemyTank(this, "PinkTank", new Vector2(200, 200), new Vector2(5, 5), 0, 100, 1f, texture2d));
-			//enemyTanks.Add(new KamikazeTank(this, "YellowTank", new Vector2(400, 400), new Vector2(3, 3), 0, 100, 1f, texture2d));
-            //enemyTanks.Add(new StaticTank(this, "YellowTank", new Vector2(300, 300), new Vector2(3, 3), 0, 100, 1f, texture2d));
+            enemyTanks.Add(new EnemyTank(this, "PinkTank", new Vector2(200, 200), new Vector2(5, 5), 0, 100, 1f, texture2d));
+            enemyTanks.Add(new KamikazeTank(this, "YellowTank", new Vector2(400, 400), new Vector2(3, 3), 0, 100, 1f, texture2d));
+            enemyTanks.Add(new StaticTank(this, "YellowTank", new Vector2(300, 300), new Vector2(3, 3), 0, 100, 1f, texture2d));
+
+            int numTanks = 36;
 
             //Generate circle of static tanks
-            for (int i = 0; i < 8; i++) {
+            for (int i = 0; i < numTanks; i++) {
                 int centerX = graphics.PreferredBackBufferWidth / 2;
                 int centerY = graphics.PreferredBackBufferHeight / 2;
-                double angle = 45 * i * (Math.PI / 180);
+                double angle = 360/numTanks * i * (Math.PI / 180);
+                int circleRadius = 200;
 
-                int pointX = (int) Math.Round(Math.Cos(angle) * 200 + centerX);
-                int pointY = (int) Math.Round(Math.Sin(angle) * 200 + centerY);
+                int pointX = (int) Math.Round(Math.Cos(angle) * circleRadius + centerX);
+                int pointY = (int) Math.Round(Math.Sin(angle) * circleRadius + centerY);
 
                 enemyTanks.Add(new StaticTank(this, "GreenTank", new Vector2(pointX, pointY), new Vector2(3, 3), (float) (angle+Math.PI), 100, 1f, texture2d));
             }
@@ -160,10 +163,8 @@ namespace SearchAndSort
             }
             foreach (Bullet bullet in bullets)
             {
-                if (bullet != null)
-                {
+                if(bullet != null)
                     bullet.Update();
-                }
             }
 
             //Update base

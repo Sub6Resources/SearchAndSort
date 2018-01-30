@@ -373,47 +373,25 @@ namespace SearchAndSort
         {
             this.rotation = angle;
         }
+        public float AimAt(Vector2 target) {
+            if (target.X > location.X)
+            {
+                return (float)(Math.Atan((location.Y - target.Y) / (location.X - target.X)));
+            }
+            else
+            {
+                return (float)(Math.Atan((location.Y - target.Y) / (location.X - target.X)) + Math.PI);
+            }
+        }
+        public void SlowlyRotate(float targetRotation, GameTime gameTime) {
+            Rotate(MathHelper.Lerp(rotation, targetRotation, (float)gameTime.ElapsedGameTime.TotalSeconds));
+        }
         public Bullet Fire()
         {
             if (alive)
             {
                 game.sound.PlaySound(Sound.Sounds.LASERSHOOT);
-                if (rotation == UP)
-                {
-                    return new Bullet(game, new Rectangle((int)location.X-2, (int)location.Y, 5, 5), new Vector2(0, -20), Color.Red, player, UP, whiteRectangle);
-                }
-                else if (rotation == UP_RIGHT)
-                {
-                    return new Bullet(game, new Rectangle((int)location.X-2, (int)location.Y-2, 5, 5), new Vector2(10, -10), Color.Red, player, UP_RIGHT, whiteRectangle);
-                }
-                else if (rotation == RIGHT)
-                {
-                    return new Bullet(game, new Rectangle((int)location.X-5, (int)location.Y-2, 5, 5), new Vector2(20, 0), Color.Red, player, RIGHT, whiteRectangle);
-                }
-                else if (rotation == DOWN_RIGHT)
-                {
-                    return new Bullet(game, new Rectangle((int)location.X, (int)location.Y, 5, 5), new Vector2(10, 10), Color.Red, player, DOWN_RIGHT, whiteRectangle);
-                }
-                else if (rotation == DOWN)
-                {
-                    return new Bullet(game, new Rectangle((int)location.X-2, (int)location.Y-5, 5, 5), new Vector2(0, 20), Color.Red, player, DOWN, whiteRectangle);
-                }
-                else if (rotation == DOWN_LEFT)
-                {
-                    return new Bullet(game, new Rectangle((int)location.X-2, (int)location.Y-2, 5, 5), new Vector2(-10, 10), Color.Red, player, DOWN_LEFT, whiteRectangle);
-                }
-                else if (rotation == LEFT)
-                {
-                    return new Bullet(game, new Rectangle((int)location.X, (int)location.Y-2, 5, 5), new Vector2(-20, 0), Color.Red, player, LEFT, whiteRectangle);
-                }
-                else if (rotation == UP_LEFT)
-                {
-                    return new Bullet(game, new Rectangle((int)location.X-3, (int)location.Y-3, 5, 5), new Vector2(-10, -10), Color.Red, player, UP, whiteRectangle);
-                }
-                else
-                {
-                    return null;
-                }
+                return new Bullet(game, new Rectangle((int) location.X, (int) location.Y, 5, 5), new Vector2((float) (15 * Math.Cos(rotation)), (float) (15 * Math.Sin(rotation))), Color.Red, player, rotation, whiteRectangle);
             }
             return null;
             

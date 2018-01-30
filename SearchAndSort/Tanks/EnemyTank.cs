@@ -1,11 +1,10 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using System.Collections.Generic;
 
 namespace SearchAndSort
 {
-	public class EnemyTank : Tank {
+    public class EnemyTank : Tank {
 
 		public float targetDirection;
 		public new bool enemy = true;
