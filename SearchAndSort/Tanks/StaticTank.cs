@@ -10,23 +10,9 @@ namespace SearchAndSort
         public new bool enemy = true;
 
         public StaticTank() { }
-        public StaticTank(Game1 _game, string _tankSpriteName, Vector2 _location, Vector2 _speed, float _rotation, int _player, int _strength, Texture2D _whiteRectangle)
+        public StaticTank(Game1 _game, Texture2D _tankTexture, Vector2 _location, Vector2 _speed, float _rotation, int _strength): base(_game, _tankTexture, _location, _speed, _rotation, _strength)
         {
-            tankTexture = _game.Content.Load<Texture2D>(_tankSpriteName);
-            location = _location;
-            startingLocation = _location;
-            speed = _speed;
-            rotation = _rotation;
-            origin = new Vector2(this.tankTexture.Width / 2f, this.tankTexture.Height / 2f);
-            game = _game;
-            player = _player;
-            scale = 1f;
-            whiteRectangle = _whiteRectangle;
-            alive = true;
-            strength = _strength;
-            lives = _strength;
-            respawnParticles = new ParticleSpray(location, game, player, whiteRectangle, Color.Green, 0);
-            deathParticles = new ParticleSpray(location, game, player, whiteRectangle, Color.Yellow, 0);
+            deathParticles = new ParticleSpray(location, game, player, tankTexture, Color.Green, 0);
             tankRect = new Rectangle((int)location.X - (tankTexture.Width / 2), (int)location.Y - (tankTexture.Height / 2), tankTexture.Width, tankTexture.Height);
             targetDirection = DOWN;
         }

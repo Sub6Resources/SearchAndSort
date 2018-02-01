@@ -63,18 +63,18 @@ namespace SearchAndSort
             string levelMap =
                 "11111111111111111111\n" +
                 "10000000000000000001\n" +
-                "10001000000000000001\n" +
-                "10000001000000000001\n" +
-                "10000000000010000001\n" +
-                "10000000000000010001\n" +
-                "10001000000000000001\n" +
-                "11101111111111111111\n" +
-                "10001000000001000001\n" +
-                "10000000000000000001\n" +
-                "10000000100000001001\n" +
-                "10001000000000000001\n" +
-                "10000000000010000001\n" +
-                "10000010000000000001\n" +
+                "10000001111110000001\n" +
+                "10000010000001000001\n" +
+                "10000100000000100001\n" +
+                "10001000000000010001\n" +
+                "10010000000000001001\n" +
+                "10010000000000001001\n" +
+                "10010000000000001001\n" +
+                "10010000000000001001\n" +
+                "10001000000000010001\n" +
+                "10000100000000100001\n" +
+                "10000010000001000001\n" +
+                "10000001111110000001\n" +
                 "10000000000000000001\n" +
                 "11111111111111111111";
             map.setMap(levelMap);
@@ -82,26 +82,30 @@ namespace SearchAndSort
             //Initialize window background
             background = Content.Load<Texture2D>("Stars");
 
-            //Initialize tanks
-            playerTanks.Add(new Tank(this, "GreenTank", new Vector2(100,100), new Vector2(3, 3), 0, 1, 1f, texture2d, Keys.W, Keys.A, Keys.S, Keys.D, Keys.Tab, Keys.LeftShift, Keys.Space, Keys.Q, Keys.E));
-            playerTanks.Add(new Tank(this, "RedTank", new Vector2(map.screenWidth-100, 100), new Vector2(3, 3), MathHelper.Pi, 2, 1f, texture2d, Keys.Up, Keys.Left, Keys.Down, Keys.Right, Keys.Enter, Keys.RightShift, Keys.Enter, Keys.RightAlt, Keys.OemQuestion));
-            enemyTanks.Add(new EnemyTank(this, "PinkTank", new Vector2(200, 200), new Vector2(5, 5), 0, 100, 3, texture2d));
-            enemyTanks.Add(new KamikazeTank(this, "YellowTank", new Vector2(400, 400), new Vector2(3, 3), 0, 100, 3, texture2d));
-            enemyTanks.Add(new StaticTank(this, "YellowTank", new Vector2(300, 300), new Vector2(3, 3), 0, 100, 3, texture2d));
+            //Initialize controls
+            Controls player1Controls = new Controls(keyUp: Keys.W, keyLeft: Keys.A, keyDown: Keys.S, keyRight: Keys.D, keyBoost: Keys.Tab, keyReverse: Keys.LeftShift, keyFire: Keys.Space, keyExplode: Keys.E, keyMine: Keys.Q);
+            Controls player2Controls = new Controls(keyUp: Keys.Up, keyLeft: Keys.Left, keyDown: Keys.Down, keyRight: Keys.Right, keyBoost: Keys.RightShift, keyReverse: Keys.LeftShift, keyFire: Keys.Enter, keyExplode: Keys.RightAlt, keyMine: Keys.OemQuestion);
 
-            int numTanks = 8;
+            //Initialize tanks
+            playerTanks.Add(new Tank(this, Content.Load<Texture2D>("GreenTank"), new Vector2(100,100), new Vector2(3, 3), 0, 1, player1Controls));
+            playerTanks.Add(new Tank(this, Content.Load<Texture2D>("RedTank"), new Vector2(map.screenWidth-100, 100), new Vector2(3, 3), MathHelper.Pi, 2, player2Controls));
+            enemyTanks.Add(new EnemyTank(this, Content.Load<Texture2D>("PinkTank"), new Vector2(200, 200), new Vector2(5, 5), 0, 3));
+            enemyTanks.Add(new KamikazeTank(this, Content.Load<Texture2D>("YellowTank"), new Vector2(400, 400), new Vector2(3, 3), 0, 3));
+            enemyTanks.Add(new StaticTank(this, Content.Load<Texture2D>("YellowTank"), new Vector2(300, 300), new Vector2(3, 3), 0, 3));
+
+            const int NUM_TANKS = 36;
 
             //Generate circle of static tanks
-            for (int i = 0; i < numTanks; i++) {
+            for (int i = 0; i < NUM_TANKS; i++) {
                 int centerX = graphics.PreferredBackBufferWidth / 2;
                 int centerY = graphics.PreferredBackBufferHeight / 2;
-                double angle = 360/numTanks * i * (Math.PI / 180);
+                double angle = 360/NUM_TANKS * i * (Math.PI / 180);
                 int circleRadius = 200;
 
                 int pointX = (int) Math.Round(Math.Cos(angle) * circleRadius + centerX);
                 int pointY = (int) Math.Round(Math.Sin(angle) * circleRadius + centerY);
 
-                enemyTanks.Add(new StaticTank(this, "GreenTank", new Vector2(pointX, pointY), new Vector2(3, 3), (float)(angle + Math.PI), 100, 1, texture2d));
+                enemyTanks.Add(new StaticTank(this, Content.Load<Texture2D>("GreenTank"), new Vector2(pointX, pointY), new Vector2(3, 3), (float)(angle + Math.PI), 1));
             }
             //Initialize scoring system
             scoreManager = new Score(this, 100);

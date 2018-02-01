@@ -12,23 +12,15 @@ namespace SearchAndSort
         public Vector2 location;
         public Vector2 startingLocation;
 		public Vector2 speed;
-        public float rotation { get; set; }
-        public Texture2D tankTexture { get; set; }
-        public Vector2 origin { get; set; }
-        public Game1 game { get; set; }
-        public int player { get; set; }
-        public int lives { get; set; }
-        public float scale { get; set; }
-        public Keys keyUp;
-        public Keys keyLeft;
-        public Keys keyDown;
-        public Keys keyRight;
-        public Keys keyBoost;
-        public Keys keyReverse;
-        public Keys fireKey;
-        public Keys explodeKey;
-        public Keys mineKey;
-        public bool alive;
+        public float rotation;
+        public Texture2D tankTexture;
+        public Vector2 origin;
+        public Game1 game;
+        public int player;
+        public int lives;
+        public float scale;
+        public Controls controls;
+        public bool alive = true;
         public Rectangle tankRect;
         public ParticleSpray deathParticles;
         public ParticleSpray respawnParticles;
@@ -42,7 +34,6 @@ namespace SearchAndSort
         public const float LEFT = MathHelper.Pi;
         public const float UP_LEFT = -(MathHelper.Pi - MathHelper.PiOver4);
 		public bool colliding = false;
-        public Texture2D whiteRectangle;
 		public bool enemy = false;
 		public Explosion explosion;
         public float fireDelay = 0f;
@@ -62,9 +53,9 @@ namespace SearchAndSort
         }
 
         //overloaded constructor(s)
-        public Tank(Game1 _game, string _tankSpriteName, Vector2 _location, Vector2 _speed, float _rotation, int _player, float _scale, Texture2D _whiteRectangle, Keys _keyUp, Keys _keyLeft, Keys _keyDown, Keys _keyRight, Keys _keyBoost, Keys _keyReverse, Keys _keyFire, Keys _keyExplode, Keys _keyMine)
+        public Tank(Game1 _game, Texture2D _tankTexture, Vector2 _location, Vector2 _speed, float _rotation, int _player, Controls _controls)
         {
-            tankTexture = _game.Content.Load<Texture2D>(_tankSpriteName);
+            tankTexture = _tankTexture;
             location = _location;
             startingLocation = _location;
             speed = _speed;
@@ -72,22 +63,13 @@ namespace SearchAndSort
             origin = new Vector2(this.tankTexture.Width / 2f, this.tankTexture.Height / 2f);
             game = _game;
             player = _player;
-            scale = _scale;
-            whiteRectangle = _whiteRectangle;
-            keyUp = _keyUp;
-            keyLeft = _keyLeft;
-            keyDown = _keyDown;
-            keyRight = _keyRight;
-            keyBoost = _keyBoost;
-            keyReverse = _keyReverse;
-            fireKey = _keyFire;
-            explodeKey = _keyExplode;
-            mineKey = _keyMine;
+            scale = 1f;
+            controls = _controls;
             alive = true;
             lives = 3;
-            respawnParticles = new ParticleSpray(location, game, player, whiteRectangle, Color.Firebrick, 0);
-            deathParticles = new ParticleSpray(location, game, player, whiteRectangle, Color.Green, 0);
-            hitParticles = new ParticleSpray(location, game, player, whiteRectangle, Color.Silver, 0);
+            respawnParticles = new ParticleSpray(location, game, player, tankTexture, Color.Firebrick, 0);
+            deathParticles = new ParticleSpray(location, game, player, tankTexture, Color.Green, 0);
+            hitParticles = new ParticleSpray(location, game, player, tankTexture, Color.Silver, 0);
             tankRect = new Rectangle((int)location.X - (tankTexture.Width / 2), (int)location.Y - (tankTexture.Height / 2), tankTexture.Width, tankTexture.Height);
         }
 
@@ -95,7 +77,7 @@ namespace SearchAndSort
         {
             if (alive)
             {
-                spriteBatch.Draw(tankTexture, location, null, null, origin, rotation, null, null);
+                spriteBatch.Draw(tankTexture, location, null, null, origin, rotation);
             } else
 			{
                 if(explosion != null)
@@ -163,20 +145,23 @@ namespace SearchAndSort
                 hitParticles.Update(gameTime);
             }
 
-            if (state.IsKeyDown(fireKey) && fireDelay <= 0)
+            if (!(this is EnemyTank))
             {
-                fireDelay = FIRE_DELAY;
-                game.bullets.Add(Fire());
-            }
-            if (state.IsKeyDown(explodeKey) && explosionDelay <= 0)
-            {
-                explosionDelay = EXPLOSION_DELAY;
-                Explode();
-            }
-            if (state.IsKeyDown(mineKey) && mineDelay <= 0)
-            {
-                mineDelay = MINE_DELAY;
-                game.landmines.Add(new Landmine(game, new Rectangle((int)location.X, (int)location.Y, 20, 20), Vector2.Zero, Color.Orange, player, 0, whiteRectangle));
+                if (state.IsKeyDown(controls.FIRE) && fireDelay <= 0)
+                {
+                    fireDelay = FIRE_DELAY;
+                    game.bullets.Add(Fire());
+                }
+                if (state.IsKeyDown(controls.EXPLODE) && explosionDelay <= 0)
+                {
+                    explosionDelay = EXPLOSION_DELAY;
+                    Explode();
+                }
+                if (state.IsKeyDown(controls.MINE) && mineDelay <= 0)
+                {
+                    mineDelay = MINE_DELAY;
+                    game.landmines.Add(new Landmine(game, new Rectangle((int)location.X, (int)location.Y, 20, 20), Vector2.Zero, Color.Orange, player, 0, tankTexture));
+                }
             }
 
 
@@ -206,12 +191,12 @@ namespace SearchAndSort
         public virtual void Move(KeyboardState state)
         {
             //Declare the variables used to determine the direction and speed of the tank.
-            bool RIGHT_down = state.IsKeyDown(keyRight);
-            bool DOWN_down = state.IsKeyDown(keyDown);
-            bool LEFT_down = state.IsKeyDown(keyLeft);
-            bool UP_down = state.IsKeyDown(keyUp);
-            bool BOOST_down = state.IsKeyDown(keyBoost);
-            bool REVERSE_down = state.IsKeyDown(keyReverse);
+            bool RIGHT_down = state.IsKeyDown(controls.RIGHT);
+            bool DOWN_down = state.IsKeyDown(controls.DOWN);
+            bool LEFT_down = state.IsKeyDown(controls.LEFT);
+            bool UP_down = state.IsKeyDown(controls.UP);
+            bool BOOST_down = state.IsKeyDown(controls.BOOST);
+            bool REVERSE_down = state.IsKeyDown(controls.REVERSE);
             bool isPressedLeft = false;
             bool isPressedRight = false;
             bool isDrifting = false;
@@ -392,7 +377,7 @@ namespace SearchAndSort
             if (alive)
             {
                 game.sound.PlaySound(Sound.Sounds.LASERSHOOT);
-                return new Bullet(game, new Rectangle((int) location.X, (int) location.Y, 5, 5), new Vector2((float) (15 * Math.Cos(rotation)), (float) (15 * Math.Sin(rotation))), Color.Red, player, rotation, whiteRectangle);
+                return new Bullet(game, new Rectangle((int) location.X, (int) location.Y, 5, 5), new Vector2((float) (15 * Math.Cos(rotation)), (float) (15 * Math.Sin(rotation))), Color.Red, player, rotation, tankTexture);
             }
             return null;
             
@@ -404,14 +389,14 @@ namespace SearchAndSort
             {
                 Die();
             } else {
-                hitParticles = new ParticleSpray(location, game, player, whiteRectangle, Color.Firebrick, 2, 5);
+                hitParticles = new ParticleSpray(location, game, player, tankTexture, Color.Firebrick, 2, 5);
             }
         }
         public virtual void Die()
         {
             if (alive)
             {
-                deathParticles = new ParticleSpray(location, game, player, whiteRectangle, Color.Green, 2);
+                deathParticles = new ParticleSpray(location, game, player, tankTexture, Color.Green, 2);
                 alive = false;
                 location = new Vector2(-100, -100);
                 updateRectangleLocation();
@@ -423,7 +408,7 @@ namespace SearchAndSort
             {
                 location = _location;
                 lives = 3;
-                respawnParticles = new ParticleSpray(location, game, player, whiteRectangle, Color.Blue, 2);
+                respawnParticles = new ParticleSpray(location, game, player, tankTexture, Color.Blue, 2);
                 alive = true;
             }
         }
@@ -431,7 +416,7 @@ namespace SearchAndSort
 		{
 			if(alive)
 			{
-				explosion = new Explosion(location, game, player, whiteRectangle, Color.Firebrick);
+				explosion = new Explosion(location, game, player, tankTexture, Color.Firebrick);
                 game.sound.PlaySound(Sound.Sounds.EXPLOSION);
 				Die();
 			}

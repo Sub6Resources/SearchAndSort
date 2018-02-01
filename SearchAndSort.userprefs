@@ -1,22 +1,23 @@
 ﻿<Properties StartupConfiguration="{7B2C139D-F02B-4D22-83BB-D7D915CDC0C9}|Default">
-  <MonoDevelop.Ide.Workbench ActiveDocument="SearchAndSort/Bullet.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="SearchAndSort/Game1.cs">
     <Files>
       <File FileName="SearchAndSort/Map.cs" Line="35" Column="18" />
-      <File FileName="SearchAndSort/Tanks/EnemyTank.cs" Line="1" Column="1" />
-      <File FileName="SearchAndSort/Tanks/StaticTank.cs" Line="33" Column="1" />
-      <File FileName="SearchAndSort/Bullet.cs" Line="47" Column="14" />
+      <File FileName="SearchAndSort/Tanks/EnemyTank.cs" Line="16" Column="115" />
+      <File FileName="SearchAndSort/Tanks/StaticTank.cs" Line="14" Column="10" />
+      <File FileName="SearchAndSort/Bullet.cs" Line="30" Column="48" />
       <File FileName="SearchAndSort/Collision.cs" Line="13" Column="22" />
       <File FileName="SearchAndSort/Explosion.cs" Line="6" Column="24" />
-      <File FileName="SearchAndSort/Tanks/KamikazeTank.cs" Line="1" Column="1" />
+      <File FileName="SearchAndSort/Tanks/KamikazeTank.cs" Line="20" Column="25" />
       <File FileName="SearchAndSort/Landmine.cs" Line="29" Column="149" />
       <File FileName="SearchAndSort/Particle.cs" Line="10" Column="24" />
       <File FileName="SearchAndSort/ParticleSpray.cs" Line="6" Column="24" />
       <File FileName="SearchAndSort/Program.cs" Line="3" Column="24" />
       <File FileName="SearchAndSort/Score.cs" Line="10" Column="24" />
       <File FileName="SearchAndSort/Sound.cs" Line="7" Column="24" />
-      <File FileName="SearchAndSort/Tanks/Tank.cs" Line="1" Column="1" />
+      <File FileName="SearchAndSort/Tanks/Tank.cs" Line="148" Column="38" />
       <File FileName="SearchAndSort/Tile.cs" Line="49" Column="44" />
-      <File FileName="SearchAndSort/Game1.cs" Line="52" Column="13" />
+      <File FileName="SearchAndSort/Game1.cs" Line="109" Column="14" />
+      <File FileName="SearchAndSort/Controls.cs" Line="6" Column="5" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" />

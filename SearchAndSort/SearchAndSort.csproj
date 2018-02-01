@@ -54,6 +54,7 @@
     <Compile Include="Tanks\KamikazeTank.cs" />
     <Compile Include="Tanks\StaticTank.cs" />
     <Compile Include="Tanks\Tank.cs" />
+    <Compile Include="Controls.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.manifest" />

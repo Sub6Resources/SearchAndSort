@@ -13,25 +13,11 @@ namespace SearchAndSort
         public int strength;
 		
 		public EnemyTank() { }
-		public EnemyTank(Game1 _game, string _tankSpriteName, Vector2 _location, Vector2 _speed, float _rotation, int _player, int _strength, Texture2D _whiteRectangle)
+        public EnemyTank(Game1 _game, Texture2D _tankTexture, Vector2 _location, Vector2 _speed, float _rotation, int _strength): base(_game, _tankTexture, _location, _speed, _rotation, 100, null)
 		{
-			tankTexture = _game.Content.Load<Texture2D>(_tankSpriteName);
-			location = _location;
-			startingLocation = _location;
-			speed = _speed;
-			rotation = _rotation;
-			origin = new Vector2(this.tankTexture.Width / 2f, this.tankTexture.Height / 2f);
-			game = _game;
-			player = _player;
             strength = _strength;
-			scale = 1f;
-			whiteRectangle = _whiteRectangle;
-			alive = true;
-			lives = _strength;
-			respawnParticles = new ParticleSpray(location, game, player, whiteRectangle, Color.Gray, 0);
-			deathParticles = new ParticleSpray(location, game, player, whiteRectangle, Color.Gray, 0);
-			tankRect = new Rectangle((int)location.X - (tankTexture.Width / 2), (int)location.Y - (tankTexture.Height / 2), tankTexture.Width, tankTexture.Height);
-			targetDirection = DOWN;
+            targetDirection = DOWN;
+			deathParticles = new ParticleSpray(location, game, player, tankTexture, Color.Gray, 0);
 		}
 		public override void Update(KeyboardState state, GameTime gameTime)
 		{

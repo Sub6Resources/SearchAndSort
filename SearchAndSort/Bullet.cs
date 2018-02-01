@@ -28,6 +28,7 @@ namespace SearchAndSort
             player = _player;
             rotation = _rotation;
             rectangleTexture = _rectangleTexture;
+            //rectangleTexture.SetData(new[] { Color.White });
             alive = true;
             pointsOnHit = 50;
             pointsOnKill = 200;
