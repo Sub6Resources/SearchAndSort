@@ -90,6 +90,7 @@ namespace SearchAndSort
             hitParticles = new ParticleSpray(location, game, player, whiteRectangle, Color.Silver, 0);
             tankRect = new Rectangle((int)location.X - (tankTexture.Width / 2), (int)location.Y - (tankTexture.Height / 2), tankTexture.Width, tankTexture.Height);
         }
+
         public virtual void Draw(SpriteBatch spriteBatch)
         {
             if (alive)

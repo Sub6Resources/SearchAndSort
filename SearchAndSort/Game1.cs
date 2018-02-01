@@ -63,18 +63,18 @@ namespace SearchAndSort
             string levelMap =
                 "11111111111111111111\n" +
                 "10000000000000000001\n" +
+                "10001000000000000001\n" +
+                "10000001000000000001\n" +
+                "10000000000010000001\n" +
+                "10000000000000010001\n" +
+                "10001000000000000001\n" +
+                "11101111111111111111\n" +
+                "10001000000001000001\n" +
                 "10000000000000000001\n" +
-                "10000000000000000001\n" +
-                "10000000000000000001\n" +
-                "10000000000000000001\n" +
-                "10000000000000000001\n" +
-                "10000000000000000001\n" +
-                "10000000000000000001\n" +
-                "10000000000000000001\n" +
-                "10000000000000000001\n" +
-                "10000000000000000001\n" +
-                "10000000000000000001\n" +
-                "10000000000000000001\n" +
+                "10000000100000001001\n" +
+                "10001000000000000001\n" +
+                "10000000000010000001\n" +
+                "10000010000000000001\n" +
                 "10000000000000000001\n" +
                 "11111111111111111111";
             map.setMap(levelMap);
@@ -85,11 +85,11 @@ namespace SearchAndSort
             //Initialize tanks
             playerTanks.Add(new Tank(this, "GreenTank", new Vector2(100,100), new Vector2(3, 3), 0, 1, 1f, texture2d, Keys.W, Keys.A, Keys.S, Keys.D, Keys.Tab, Keys.LeftShift, Keys.Space, Keys.Q, Keys.E));
             playerTanks.Add(new Tank(this, "RedTank", new Vector2(map.screenWidth-100, 100), new Vector2(3, 3), MathHelper.Pi, 2, 1f, texture2d, Keys.Up, Keys.Left, Keys.Down, Keys.Right, Keys.Enter, Keys.RightShift, Keys.Enter, Keys.RightAlt, Keys.OemQuestion));
-            enemyTanks.Add(new EnemyTank(this, "PinkTank", new Vector2(200, 200), new Vector2(5, 5), 0, 100, 1f, texture2d));
-            enemyTanks.Add(new KamikazeTank(this, "YellowTank", new Vector2(400, 400), new Vector2(3, 3), 0, 100, 1f, texture2d));
-            enemyTanks.Add(new StaticTank(this, "YellowTank", new Vector2(300, 300), new Vector2(3, 3), 0, 100, 1f, texture2d));
+            enemyTanks.Add(new EnemyTank(this, "PinkTank", new Vector2(200, 200), new Vector2(5, 5), 0, 100, 3, texture2d));
+            enemyTanks.Add(new KamikazeTank(this, "YellowTank", new Vector2(400, 400), new Vector2(3, 3), 0, 100, 3, texture2d));
+            enemyTanks.Add(new StaticTank(this, "YellowTank", new Vector2(300, 300), new Vector2(3, 3), 0, 100, 3, texture2d));
 
-            int numTanks = 36;
+            int numTanks = 8;
 
             //Generate circle of static tanks
             for (int i = 0; i < numTanks; i++) {
@@ -101,7 +101,7 @@ namespace SearchAndSort
                 int pointX = (int) Math.Round(Math.Cos(angle) * circleRadius + centerX);
                 int pointY = (int) Math.Round(Math.Sin(angle) * circleRadius + centerY);
 
-                enemyTanks.Add(new StaticTank(this, "GreenTank", new Vector2(pointX, pointY), new Vector2(3, 3), (float) (angle+Math.PI), 100, 1f, texture2d));
+                enemyTanks.Add(new StaticTank(this, "GreenTank", new Vector2(pointX, pointY), new Vector2(3, 3), (float)(angle + Math.PI), 100, 1, texture2d));
             }
             //Initialize scoring system
             scoreManager = new Score(this, 100);
