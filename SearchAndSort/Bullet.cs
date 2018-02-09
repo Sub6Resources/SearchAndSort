@@ -3,9 +3,6 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace SearchAndSort
 {
-
-
-
     public class Bullet
     {
         public Game1 game;
@@ -19,7 +16,7 @@ namespace SearchAndSort
         public int pointsOnHit { get; set; }
         public int pointsOnKill { get; set; }
         public Bullet() { }
-        public Bullet(Game1 _game, Rectangle _bulletRect, Vector2 _speed, Color _color, int _player, float _rotation, Texture2D _rectangleTexture)
+        public Bullet(Game1 _game, Rectangle _bulletRect, Vector2 _speed, Color _color, int _player, float _rotation)
         {
             game = _game;
             bulletRect = _bulletRect;
@@ -27,8 +24,7 @@ namespace SearchAndSort
             color = _color;
             player = _player;
             rotation = _rotation;
-            rectangleTexture = _rectangleTexture;
-            //rectangleTexture.SetData(new[] { Color.White });
+            rectangleTexture = game.texture2d;
             alive = true;
             pointsOnHit = 50;
             pointsOnKill = 200;
@@ -65,13 +61,13 @@ namespace SearchAndSort
 				}
 			}
             foreach(Tank tank in game.playerTanks) {
-                if (tank.player != this.player && Rectangle.Intersect(bulletRect, tank.tankRect).Width != 0 && tank.alive) {
+                if (tank.player != player && Rectangle.Intersect(bulletRect, tank.tankRect).Width != 0 && tank.alive) {
                     tank.Hit();
                     game.scoreManager.addScore(player - 1, pointsOnHit);
                     if(!tank.alive) {
                         game.scoreManager.addScore(player - 1, pointsOnKill);
                     }
-                    this.Die();
+                    Die();
                 }
                 if (player == 100 && Rectangle.Intersect(bulletRect, tank.tankRect).Width != 0 && tank.alive)
                 {

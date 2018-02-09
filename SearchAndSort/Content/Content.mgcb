@@ -13,18 +13,6 @@
 
 #---------------------------------- Content ---------------------------------#
 
-#begin Arial.spritefont
-/importer:FontDescriptionImporter
-/processor:FontDescriptionProcessor
-/processorParam:PremultiplyAlpha=True
-/processorParam:TextureFormat=Compressed
-/build:Arial.spritefont
-
-#begin Content.mgcb
-/importer:
-/processor:
-/build:Content.mgcb
-
 #begin Death2.wav
 /importer:WavImporter
 /processor:SoundEffectProcessor

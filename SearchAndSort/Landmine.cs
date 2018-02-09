@@ -26,7 +26,7 @@ namespace SearchAndSort
             base.Die();
 
             game.scoreManager.addScore(player - 1, 1000);
-            theExplosion = new Explosion(new Vector2(this.bulletRect.X, this.bulletRect.Y), this.game, player, this.rectangleTexture, Color.Orange);
+            theExplosion = new Explosion(new Vector2(this.bulletRect.X, this.bulletRect.Y), this.game, player, Color.Orange);
         }
         public override void Update()
         {

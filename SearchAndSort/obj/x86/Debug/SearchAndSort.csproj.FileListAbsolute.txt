@@ -84,3 +84,9 @@
 /Users/whitaker/Documents/Projects/SearchAndSort/SearchAndSort/obj/x86/Debug/SearchAndSort.csproj.CoreCompileInputs.cache
 /Users/whitaker/Documents/Projects/SearchAndSort/SearchAndSort/obj/x86/Debug/SearchAndSort.exe
 /Users/whitaker/Documents/Projects/SearchAndSort/SearchAndSort/obj/x86/Debug/SearchAndSort.pdb
+/Users/59485/Projects/SearchAndSort/SearchAndSort/bin/Debug/Content/KamiHurt.wav
+/Users/59485/Projects/SearchAndSort/SearchAndSort/bin/Debug/Content/Laser_Shoot.wav
+/Users/59485/Projects/SearchAndSort/SearchAndSort/bin/Debug/Content/PinkTank.png
+/Users/59485/Projects/SearchAndSort/SearchAndSort/bin/Debug/Content/RedTank.png
+/Users/59485/Projects/SearchAndSort/SearchAndSort/bin/Debug/Content/Stars.png
+/Users/59485/Projects/SearchAndSort/SearchAndSort/bin/Debug/Content/wall.jpg

@@ -42,7 +42,7 @@ namespace SearchAndSort
         public void Draw(SpriteBatch spriteBatch)
         {
             //spriteBatch.DrawString(spriteFont, "Player 1: " + score[0]+"               Player 2: "+score[1], new Vector2(48,48), Color.Red);
-            //spriteBatch.DrawString(spriteFont, "Lives P1: " + game.tank1.lives + "               Lives P2: " + game.tank2.lives, new Vector2(48, 63), Color.Red);
+            //spriteBatch.DrawString(spriteFont, "Lives P1: " + game.playerTanks[1].lives + "               Lives P2: " + game.playerTanks[2].lives, new Vector2(48, 63), Color.Red);
         }
     }
 }

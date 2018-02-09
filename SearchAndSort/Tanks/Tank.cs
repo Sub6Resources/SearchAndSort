@@ -19,7 +19,6 @@ namespace SearchAndSort
         public int player;
         public int lives;
         public float scale;
-        public Controls controls;
         public bool alive = true;
         public Rectangle tankRect;
         public ParticleSpray deathParticles;
@@ -53,7 +52,7 @@ namespace SearchAndSort
         }
 
         //overloaded constructor(s)
-        public Tank(Game1 _game, Texture2D _tankTexture, Vector2 _location, Vector2 _speed, float _rotation, int _player, Controls _controls)
+        public Tank(Game1 _game, Texture2D _tankTexture, Vector2 _location, Vector2 _speed, float _rotation, int _player)
         {
             tankTexture = _tankTexture;
             location = _location;
@@ -64,7 +63,6 @@ namespace SearchAndSort
             game = _game;
             player = _player;
             scale = 1f;
-            controls = _controls;
             alive = true;
             lives = 3;
             respawnParticles = new ParticleSpray(location, game, player, tankTexture, Color.Firebrick, 0);
@@ -77,7 +75,7 @@ namespace SearchAndSort
         {
             if (alive)
             {
-                spriteBatch.Draw(tankTexture, location, null, null, origin, rotation);
+                spriteBatch.Draw(tankTexture, location, null, Color.White, rotation, origin, 1.0f, SpriteEffects.None, 1);
             } else
 			{
                 if(explosion != null)
@@ -95,10 +93,6 @@ namespace SearchAndSort
         }
         public virtual void Update(KeyboardState state, GameTime gameTime)
         {
-            if (!(this is EnemyTank))
-            {
-                updateDelays(gameTime);
-            }
             if (alive)
             {
                 Move(state);
@@ -144,27 +138,6 @@ namespace SearchAndSort
             {
                 hitParticles.Update(gameTime);
             }
-
-            if (!(this is EnemyTank))
-            {
-                if (state.IsKeyDown(controls.FIRE) && fireDelay <= 0)
-                {
-                    fireDelay = FIRE_DELAY;
-                    game.bullets.Add(Fire());
-                }
-                if (state.IsKeyDown(controls.EXPLODE) && explosionDelay <= 0)
-                {
-                    explosionDelay = EXPLOSION_DELAY;
-                    Explode();
-                }
-                if (state.IsKeyDown(controls.MINE) && mineDelay <= 0)
-                {
-                    mineDelay = MINE_DELAY;
-                    game.landmines.Add(new Landmine(game, new Rectangle((int)location.X, (int)location.Y, 20, 20), Vector2.Zero, Color.Orange, player, 0, tankTexture));
-                }
-            }
-
-
         }
         private void cancelOutCollisionOverlap(Collision collision) {
             colliding = true;
@@ -190,110 +163,7 @@ namespace SearchAndSort
         }
         public virtual void Move(KeyboardState state)
         {
-            //Declare the variables used to determine the direction and speed of the tank.
-            bool RIGHT_down = state.IsKeyDown(controls.RIGHT);
-            bool DOWN_down = state.IsKeyDown(controls.DOWN);
-            bool LEFT_down = state.IsKeyDown(controls.LEFT);
-            bool UP_down = state.IsKeyDown(controls.UP);
-            bool BOOST_down = state.IsKeyDown(controls.BOOST);
-            bool REVERSE_down = state.IsKeyDown(controls.REVERSE);
-            bool isPressedLeft = false;
-            bool isPressedRight = false;
-            bool isDrifting = false;
-
-            //isPressed keyUp statements
-            if (!RIGHT_down)
-            {
-                isPressedRight = false;
-            }
-
-            if (!LEFT_down)
-            {
-                isPressedLeft = false;
-            }
-
-            if (!LEFT_down || !RIGHT_down)
-            {
-                isDrifting = false;
-            }
-
-            //Corner drifting statements
-            if (isPressedRight && UP_down && LEFT_down)
-            {
-                isDrifting = true;
-                Rotate(UP_RIGHT);
-                MoveUp(BOOST_down, REVERSE_down);
-
-            } else if (isPressedRight && DOWN_down && LEFT_down)
-            {
-                isDrifting = true;
-                Rotate(DOWN_RIGHT);
-                MoveDown(BOOST_down, REVERSE_down);
-            }
-
-            if (isPressedLeft && UP_down)
-            {
-                isDrifting = true;
-                Rotate(UP_LEFT);
-                MoveUp(BOOST_down, REVERSE_down && RIGHT_down);
-
-            } else if (isPressedLeft && DOWN_down)
-            {
-                isDrifting = true;
-                Rotate(DOWN_LEFT);
-                MoveDown(BOOST_down, REVERSE_down && RIGHT_down);
-            }
-
-            //Basic movement statements
-            if (UP_down && !isDrifting)
-            {
-                Rotate(UP);
-                MoveUp(BOOST_down, REVERSE_down);
-                if (RIGHT_down && !BOOST_down)
-                {
-                    Rotate(UP_RIGHT);
-                    MoveRight(BOOST_down, REVERSE_down);
-                }
-                if (LEFT_down && !BOOST_down)
-                {
-                    Rotate(UP_LEFT);
-                    MoveLeft(BOOST_down, REVERSE_down);
-                }
-            }
-            else if (DOWN_down && !isDrifting)
-            {
-                Rotate(DOWN);
-                MoveDown(BOOST_down, REVERSE_down);
-                if (RIGHT_down && !BOOST_down)
-                {
-                    Rotate(DOWN_RIGHT);
-                    MoveRight(BOOST_down, REVERSE_down);
-                }
-                if (LEFT_down && !BOOST_down)
-                {
-                    Rotate(DOWN_LEFT);
-                    MoveLeft(BOOST_down, REVERSE_down);
-                }
-            }
-            else if (RIGHT_down && !isDrifting)
-            {
-                Rotate(RIGHT);
-                MoveRight(BOOST_down, REVERSE_down);
-                    if (!isPressedLeft)
-                    {
-                        isPressedRight = true;
-                    }
-            }
-            else if (LEFT_down && !isDrifting)
-            {
-                Rotate(LEFT);
-                MoveLeft(BOOST_down, REVERSE_down);
-                if (!isPressedRight)
-                {
-                        isPressedLeft = true;
-                }
-            }
-            
+            //Each tank overrides this.
         }
         public void MoveLeft(bool isBoostPressed, bool isReversedPressed)
         {
@@ -370,14 +240,14 @@ namespace SearchAndSort
             }
         }
         public void SlowlyRotate(float targetRotation, GameTime gameTime) {
-            Rotate(MathHelper.Lerp(rotation, targetRotation, (float)gameTime.ElapsedGameTime.TotalSeconds));
+            Rotate(MathHelper.Lerp(rotation, targetRotation, (float)gameTime.ElapsedGameTime.TotalSeconds * 4));
         }
         public Bullet Fire()
         {
             if (alive)
             {
                 game.sound.PlaySound(Sound.Sounds.LASERSHOOT);
-                return new Bullet(game, new Rectangle((int) location.X, (int) location.Y, 5, 5), new Vector2((float) (15 * Math.Cos(rotation)), (float) (15 * Math.Sin(rotation))), Color.Red, player, rotation, tankTexture);
+                return new Bullet(game, new Rectangle((int) location.X, (int) location.Y, 5, 5), new Vector2((float) (15 * Math.Cos(rotation)), (float) (15 * Math.Sin(rotation))), Color.Red, player, rotation);
             }
             return null;
             
@@ -416,7 +286,7 @@ namespace SearchAndSort
 		{
 			if(alive)
 			{
-				explosion = new Explosion(location, game, player, tankTexture, Color.Firebrick);
+				explosion = new Explosion(location, game, player, Color.Firebrick);
                 game.sound.PlaySound(Sound.Sounds.EXPLOSION);
 				Die();
 			}
@@ -448,23 +318,6 @@ namespace SearchAndSort
                 }
             }
             return new Collision();
-        }
-        public void updateDelays(GameTime gameTime) {
-            float timer = (float)gameTime.ElapsedGameTime.TotalMilliseconds / 1000;
-            fireDelay -= timer;
-            explosionDelay -= timer;
-            mineDelay -= timer;
-
-            //if tanks are dead, decrease their time until they respawn
-            if (!alive)
-            {
-                respawnDelay -= timer;
-                if (respawnDelay < 0)
-                {
-                    Respawn(startingLocation);
-                    respawnDelay = BACK_ALIVE_DELAY;
-                }
-            }
         }
     }
 }

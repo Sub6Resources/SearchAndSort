@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\MonoGame\v3.0\MonoGame.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\MonoGame\v3.0\MonoGame.Common.props')" />
   <PropertyGroup>
@@ -48,6 +48,7 @@
     <Compile Include="Particle.cs" />
     <Compile Include="ParticleSpray.cs" />
     <Compile Include="Sound.cs" />
+    <Compile Include="Tanks\ConfusedTank.cs" />
     <Compile Include="Tile.cs" />
     <Compile Include="Score.cs" />
     <Compile Include="Tanks\EnemyTank.cs" />
@@ -55,17 +56,11 @@
     <Compile Include="Tanks\StaticTank.cs" />
     <Compile Include="Tanks\Tank.cs" />
     <Compile Include="Controls.cs" />
+    <Compile Include="Tanks\Player.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.manifest" />
     <None Include="Icon.png" />
-    <None Include="Content\Arial.spritefont" />
-    <None Include="Content\Content.mgcb" />
-    <None Include="Content\Death2.wav" />
-    <None Include="Content\Derp.wav" />
-    <None Include="Content\Derp2.wav" />
-    <None Include="Content\derpDeath.wav" />
-    <None Include="Content\DerpHurt.wav" />
     <None Include="Content\eenewDerpDeath.wav" />
     <None Include="Content\eenewKamiDeath.wav" />
     <None Include="Content\Elite1.wav" />
@@ -78,12 +73,24 @@
     <None Include="Content\KamiAnger.wav" />
     <None Include="Content\KamiCharge.wav" />
     <None Include="Content\KamiDeath.wav" />
-    <None Include="Content\KamiHurt.wav" />
-    <None Include="Content\Laser_Shoot.wav" />
-    <None Include="Content\PinkTank.png" />
-    <None Include="Content\RedTank.png" />
-    <None Include="Content\Stars.png" />
-    <None Include="Content\wall.jpg" />
+    <None Include="Content\KamiHurt.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\Laser_Shoot.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\PinkTank.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\RedTank.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\Stars.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\wall.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Icon.ico" />
@@ -122,10 +129,18 @@
     <Content Include="libSDL2-2.0.0.dylib">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Content\Death2.wav" />
+    <Content Include="Content\Derp.wav" />
+    <Content Include="Content\Derp2.wav" />
+    <Content Include="Content\derpDeath.wav" />
+    <Content Include="Content\DerpHurt.wav" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Content\" />
     <Folder Include="Tanks\" />
+  </ItemGroup>
+  <ItemGroup>
+    <MonoGameContentReference Include="Content\Content.mgcb" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\MonoGame\v3.0\MonoGame.Content.Builder.targets" />

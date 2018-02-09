@@ -13,6 +13,8 @@ namespace SearchAndSort
         Vector2 initSpeed = new Vector2();
         public bool kamiCharge = false;
         private bool chargeSoundPlayed = false;
+	    private const float FIRE_DELAY = 3;
+	    private float delayOfFire = FIRE_DELAY;
 
         public KamikazeTank(Game1 _game, Texture2D _tankTexture, Vector2 _location, Vector2 _speed, float _rotation, int _strength): base(_game, _tankTexture, _location, _speed, _rotation, _strength)
 		{
@@ -24,7 +26,20 @@ namespace SearchAndSort
 			tankRect = new Rectangle((int)location.X - (tankTexture.Width / 2), (int)location.Y - (tankTexture.Height / 2), tankTexture.Width, tankTexture.Height);
 			targetDirection = DOWN;
 		}
-		public override void Move(KeyboardState state)
+
+	    public override void Update(KeyboardState state, GameTime gameTime)
+	    {
+	        float timer = (float) gameTime.ElapsedGameTime.TotalMilliseconds / 1000;
+	        delayOfFire -= timer;
+	        if(delayOfFire <= 0)
+	        {
+	            game.bullets.Add(Fire());
+	            delayOfFire = FIRE_DELAY;
+	        }
+	        base.Update(state, gameTime);
+	    }
+
+	    public override void Move(KeyboardState state)
 		{
             if (colliding && !kamiCharge)
             {

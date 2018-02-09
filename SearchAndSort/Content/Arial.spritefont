@@ -10,31 +10,21 @@ with.
 <XnaContent xmlns:Graphics="Microsoft.Xna.Framework.Content.Pipeline.Graphics">
 
   <Asset Type="Graphics:FontDescription">
-
-
     <!--
     Modify this string to change the font that will be imported.
     -->
-
     <FontName>Arial</FontName>
-
-
+    <FontDescription>Arial</FontDescription>
     <!--
     Size is a float value, measured in points. Modify this value to change
     the size of the font.
     -->
-
     <Size>12</Size>
-
-
     <!--
     Spacing is a float value, measured in pixels. Modify this value to change
     the amount of spacing in between characters.
     -->
-
     <Spacing>0</Spacing>
-
-
     <!--
     UseKerning controls the layout of the font. If this value is true, kerning information
     will be used when placing characters.

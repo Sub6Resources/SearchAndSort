@@ -8,12 +8,10 @@ namespace SearchAndSort
 
 		public float targetDirection;
 		public new bool enemy = true;
-		private float delayOfFire = 3;
-		private const float FIRE_DELAY = 3;
         public int strength;
 		
 		public EnemyTank() { }
-        public EnemyTank(Game1 _game, Texture2D _tankTexture, Vector2 _location, Vector2 _speed, float _rotation, int _strength): base(_game, _tankTexture, _location, _speed, _rotation, 100, null)
+        public EnemyTank(Game1 _game, Texture2D _tankTexture, Vector2 _location, Vector2 _speed, float _rotation, int _strength): base(_game, _tankTexture, _location, _speed, _rotation, 100)
 		{
             strength = _strength;
             targetDirection = DOWN;
@@ -21,13 +19,6 @@ namespace SearchAndSort
 		}
 		public override void Update(KeyboardState state, GameTime gameTime)
 		{
-			float timer = (float) gameTime.ElapsedGameTime.TotalMilliseconds / 1000;
-			delayOfFire -= timer;
-			if(delayOfFire <= 0)
-			{
-				game.bullets.Add(Fire());
-				delayOfFire = FIRE_DELAY;
-			}
 			base.Update(state, gameTime);
 		}
 		public override void Move(KeyboardState state)

@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System.Collections.Generic;
 using System;
+using SearchAndSort.Tanks;
 
 namespace SearchAndSort
 {
@@ -14,7 +15,7 @@ namespace SearchAndSort
         //Graphics Stuff
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
-        Texture2D texture2d;
+        public Texture2D texture2d;
 
         //Game stuff
         public List<Tank> playerTanks = new List<Tank>();
@@ -69,12 +70,12 @@ namespace SearchAndSort
                 "10001000000000010001\n" +
                 "10010000000000001001\n" +
                 "10010000000000001001\n" +
-                "10010000000000001001\n" +
-                "10010000000000001001\n" +
-                "10001000000000010001\n" +
-                "10000100000000100001\n" +
-                "10000010000001000001\n" +
-                "10000001111110000001\n" +
+                "10000000000000000001\n" +
+                "10000000000000000001\n" +
+                "10000000000000000001\n" +
+                "10000000000000000001\n" +
+                "10000000000000000001\n" +
+                "10000000000000000001\n" +
                 "10000000000000000001\n" +
                 "11111111111111111111";
             map.setMap(levelMap);
@@ -87,14 +88,17 @@ namespace SearchAndSort
             Controls player2Controls = new Controls(keyUp: Keys.Up, keyLeft: Keys.Left, keyDown: Keys.Down, keyRight: Keys.Right, keyBoost: Keys.RightShift, keyReverse: Keys.LeftShift, keyFire: Keys.Enter, keyExplode: Keys.RightAlt, keyMine: Keys.OemQuestion);
 
             //Initialize tanks
-            playerTanks.Add(new Tank(this, Content.Load<Texture2D>("GreenTank"), new Vector2(100,100), new Vector2(3, 3), 0, 1, player1Controls));
-            playerTanks.Add(new Tank(this, Content.Load<Texture2D>("RedTank"), new Vector2(map.screenWidth-100, 100), new Vector2(3, 3), MathHelper.Pi, 2, player2Controls));
-            enemyTanks.Add(new EnemyTank(this, Content.Load<Texture2D>("PinkTank"), new Vector2(200, 200), new Vector2(5, 5), 0, 3));
-            enemyTanks.Add(new KamikazeTank(this, Content.Load<Texture2D>("YellowTank"), new Vector2(400, 400), new Vector2(3, 3), 0, 3));
-            enemyTanks.Add(new StaticTank(this, Content.Load<Texture2D>("YellowTank"), new Vector2(300, 300), new Vector2(3, 3), 0, 3));
+            playerTanks.Add(new Player(this, Content.Load<Texture2D>("GreenTank"), new Vector2(100,100), new Vector2(3, 3), 0, 1, player1Controls));
+            playerTanks.Add(new Player(this, Content.Load<Texture2D>("RedTank"), new Vector2(map.screenWidth-100, 100), new Vector2(3, 3), MathHelper.Pi, 2, player2Controls));
+            //enemyTanks.Add(new EnemyTank(this, Content.Load<Texture2D>("PinkTank"), new Vector2(200, 200), new Vector2(5, 5), 0, 3));
+            //enemyTanks.Add(new KamikazeTank(this, Content.Load<Texture2D>("YellowTank"), new Vector2(400, 400), new Vector2(3, 3), 0, 3));
+            //enemyTanks.Add(new StaticTank(this, Content.Load<Texture2D>("YellowTank"), new Vector2(300, 300), new Vector2(3, 3), 0, 3));
+            playerTanks.Add(new ConfusedTank(this, Content.Load<Texture2D>("YellowTank"), new Vector2(graphics.PreferredBackBufferWidth/2, graphics.PreferredBackBufferHeight/2), Vector2.Zero, 0, 3));
 
             const int NUM_TANKS = 36;
 
+            Random randy = new Random();
+            
             //Generate circle of static tanks
             for (int i = 0; i < NUM_TANKS; i++) {
                 int centerX = graphics.PreferredBackBufferWidth / 2;
@@ -105,7 +109,7 @@ namespace SearchAndSort
                 int pointX = (int) Math.Round(Math.Cos(angle) * circleRadius + centerX);
                 int pointY = (int) Math.Round(Math.Sin(angle) * circleRadius + centerY);
 
-                enemyTanks.Add(new StaticTank(this, Content.Load<Texture2D>("GreenTank"), new Vector2(pointX, pointY), new Vector2(3, 3), (float)(angle + Math.PI), 1));
+                enemyTanks.Add(new StaticTank(this, Content.Load<Texture2D>("GreenTank"), new Vector2(pointX, pointY), new Vector2(3, 3), (float)(angle + Math.PI), randy.Next(0, 100)));
             }
             //Initialize scoring system
             scoreManager = new Score(this, 100);
@@ -188,19 +192,6 @@ namespace SearchAndSort
             //Draw background
             spriteBatch.Draw(background, new Rectangle(0, 0, map.screenWidth, map.screenHeight), Color.White);
 
-            //Draw tanks
-            foreach (Tank player in playerTanks)
-            {
-                player.Draw(spriteBatch);
-            }
-            foreach (EnemyTank et in enemyTanks)
-            {
-                et.Draw(spriteBatch);
-            }
-
-            //Draw map
-            map.Draw(spriteBatch);
-
             //Draw game objects
             foreach (Landmine lm in landmines)
             {
@@ -213,6 +204,19 @@ namespace SearchAndSort
                     bullet.Draw(spriteBatch);
                 }
             }
+
+            //Draw tanks
+            foreach (Tank player in playerTanks)
+            {
+                player.Draw(spriteBatch);
+            }
+            foreach (EnemyTank et in enemyTanks)
+            {
+                et.Draw(spriteBatch);
+            }
+
+            //Draw map
+            map.Draw(spriteBatch);
 
             //Draw score
             scoreManager.Draw(spriteBatch);

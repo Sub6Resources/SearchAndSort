@@ -11,7 +11,7 @@ namespace SearchAndSort
         private Color color;
         private Bullet[] shrapnel = new Bullet[MAX_PROJECTILES];
         public Explosion() { }
-        public Explosion(Vector2 location, Game1 game, int player, Texture2D whiteRectangle, Color _color)
+        public Explosion(Vector2 location, Game1 game, int player, Color _color)
         {
             color = _color;
             Random randy = new Random();
@@ -34,7 +34,7 @@ namespace SearchAndSort
                 int c = randy.Next(0, 456);
                 color = Color.FromNonPremultiplied(255, r, g, c);
                 //Create a new shrapnel bullet
-                shrapnel[i] = new Bullet(game, new Rectangle(new Point((int)location.X, (int)location.Y), new Point(randy.Next(1, 20), randy.Next(1, 20))), speed, color, player, randy.Next(-((int)MathHelper.Pi), (int)MathHelper.Pi), whiteRectangle);
+                shrapnel[i] = new Bullet(game, new Rectangle(new Point((int)location.X, (int)location.Y), new Point(randy.Next(1, 20), randy.Next(1, 20))), speed, color, player, randy.Next(-((int)MathHelper.Pi), (int)MathHelper.Pi));
             }
         }
         public void Draw(SpriteBatch spriteBatch) {
