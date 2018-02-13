@@ -11,7 +11,7 @@ namespace SearchAndSort
         public int strength;
 		
 		public EnemyTank() { }
-        public EnemyTank(Game1 _game, Texture2D _tankTexture, Vector2 _location, Vector2 _speed, float _rotation, int _strength): base(_game, _tankTexture, _location, _speed, _rotation, 100)
+        public EnemyTank(Game1 _game, Texture2D _tankTexture, Vector2 _location, Vector2 _speed, float _rotation, int _strength, int _lives): base(_game, _tankTexture, _location, _speed, _rotation, 100, _lives)
 		{
             strength = _strength;
             targetDirection = DOWN;

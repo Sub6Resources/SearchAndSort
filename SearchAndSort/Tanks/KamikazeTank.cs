@@ -10,13 +10,13 @@ namespace SearchAndSort
 	public class KamikazeTank : EnemyTank
 	{
 		private const int AI_TOLERANCE = 3;
-        Vector2 initSpeed = new Vector2();
-        public bool kamiCharge = false;
+	    readonly Vector2 initSpeed;
+	    private bool kamiCharge = false;
         private bool chargeSoundPlayed = false;
 	    private const float FIRE_DELAY = 3;
 	    private float delayOfFire = FIRE_DELAY;
 
-        public KamikazeTank(Game1 _game, Texture2D _tankTexture, Vector2 _location, Vector2 _speed, float _rotation, int _strength): base(_game, _tankTexture, _location, _speed, _rotation, _strength)
+        public KamikazeTank(Game1 _game, Texture2D _tankTexture, Vector2 _location, Vector2 _speed, float _rotation, int _strength, int _lives): base(_game, _tankTexture, _location, _speed, _rotation, _strength, _lives)
 		{
             initSpeed = speed;
 			rotation = _rotation;
@@ -120,7 +120,7 @@ namespace SearchAndSort
             speed = initSpeed;
             //If very close to enemy tank, explode
             foreach (Tank tank in game.playerTanks) {
-                if ((location.X >= tank.location.X - AI_TOLERANCE && location.X <= tank.location.X + AI_TOLERANCE) && (location.Y >= tank.location.Y - AI_TOLERANCE && location.Y <= tank.location.Y + AI_TOLERANCE))
+                if (location.X >= tank.location.X - AI_TOLERANCE && location.X <= tank.location.X + AI_TOLERANCE && (location.Y >= tank.location.Y - AI_TOLERANCE && location.Y <= tank.location.Y + AI_TOLERANCE))
                 {
                     Explode();
                 }

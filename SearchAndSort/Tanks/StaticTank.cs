@@ -10,7 +10,7 @@ namespace SearchAndSort
         public new bool enemy = true;
 
         public StaticTank() { }
-        public StaticTank(Game1 _game, Texture2D _tankTexture, Vector2 _location, Vector2 _speed, float _rotation, int _strength): base(_game, _tankTexture, _location, _speed, _rotation, _strength)
+        public StaticTank(Game1 _game, Texture2D _tankTexture, Vector2 _location, Vector2 _speed, float _rotation, int _strength, int _lives): base(_game, _tankTexture, _location, _speed, _rotation, _strength, _lives)
         {
             deathParticles = new ParticleSpray(location, game, player, tankTexture, Color.Green, 0);
             tankRect = new Rectangle((int)location.X - (tankTexture.Width / 2), (int)location.Y - (tankTexture.Height / 2), tankTexture.Width, tankTexture.Height);

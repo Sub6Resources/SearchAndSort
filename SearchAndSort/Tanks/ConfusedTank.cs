@@ -10,6 +10,9 @@ namespace SearchAndSort
     public class ConfusedTank : Tank
     {
         private bool fired;
+        private const float FIRE_DELAY = 1;
+        private float delayOfFire = FIRE_DELAY;
+        
         public ConfusedTank()
         {
             
@@ -28,6 +31,19 @@ namespace SearchAndSort
         public override void Update(KeyboardState state, GameTime gameTime)
         {
             base.Update(state, gameTime);
+            
+            float timer = (float) gameTime.ElapsedGameTime.TotalMilliseconds / 1000;
+            delayOfFire -= timer;
+            if(delayOfFire <= 0)
+            {
+                if (fired)
+                {
+                    game.bullets.Add(Fire());
+                    delayOfFire = FIRE_DELAY;
+                    fired = false;
+                }
+            }
+            
             int toDestroy = SearchAndDestroy();
             if (toDestroy > -1)
             {
@@ -37,12 +53,11 @@ namespace SearchAndSort
                 if (Math.Abs(rotation - AimAt(new Vector2(tankToRotateTo.location.X, tankToRotateTo.location.Y))) < Math.PI/180 && fired == false)
                 {
                     fired = true;
-                    game.bullets.Add(Fire());
                 }
-                else
-                {
-                    fired = false;
-                }
+            }
+            else
+            {
+                Explode();
             }
         }
 

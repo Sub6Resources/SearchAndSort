@@ -90,7 +90,7 @@ namespace SearchAndSort
             //Initialize tanks
             playerTanks.Add(new Player(this, Content.Load<Texture2D>("GreenTank"), new Vector2(100,100), new Vector2(3, 3), 0, 1, player1Controls));
             playerTanks.Add(new Player(this, Content.Load<Texture2D>("RedTank"), new Vector2(map.screenWidth-100, 100), new Vector2(3, 3), MathHelper.Pi, 2, player2Controls));
-            //enemyTanks.Add(new EnemyTank(this, Content.Load<Texture2D>("PinkTank"), new Vector2(200, 200), new Vector2(5, 5), 0, 3));
+            enemyTanks.Add(new EnemyTank(this, Content.Load<Texture2D>("PinkTank"), new Vector2(200, 200), new Vector2(5, 5), 0, 100, 1));
             //enemyTanks.Add(new KamikazeTank(this, Content.Load<Texture2D>("YellowTank"), new Vector2(400, 400), new Vector2(3, 3), 0, 3));
             //enemyTanks.Add(new StaticTank(this, Content.Load<Texture2D>("YellowTank"), new Vector2(300, 300), new Vector2(3, 3), 0, 3));
             playerTanks.Add(new ConfusedTank(this, Content.Load<Texture2D>("YellowTank"), new Vector2(graphics.PreferredBackBufferWidth/2, graphics.PreferredBackBufferHeight/2), Vector2.Zero, 0, 3));
@@ -109,7 +109,7 @@ namespace SearchAndSort
                 int pointX = (int) Math.Round(Math.Cos(angle) * circleRadius + centerX);
                 int pointY = (int) Math.Round(Math.Sin(angle) * circleRadius + centerY);
 
-                enemyTanks.Add(new StaticTank(this, Content.Load<Texture2D>("GreenTank"), new Vector2(pointX, pointY), new Vector2(3, 3), (float)(angle + Math.PI), randy.Next(0, 100)));
+                enemyTanks.Add(new StaticTank(this, Content.Load<Texture2D>("GreenTank"), new Vector2(pointX, pointY), new Vector2(3, 3), (float)(angle + Math.PI), randy.Next(0, 100), 1));
             }
             //Initialize scoring system
             scoreManager = new Score(this, 100);

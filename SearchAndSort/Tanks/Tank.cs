@@ -70,6 +70,25 @@ namespace SearchAndSort
             hitParticles = new ParticleSpray(location, game, player, tankTexture, Color.Silver, 0);
             tankRect = new Rectangle((int)location.X - (tankTexture.Width / 2), (int)location.Y - (tankTexture.Height / 2), tankTexture.Width, tankTexture.Height);
         }
+        
+        public Tank(Game1 _game, Texture2D _tankTexture, Vector2 _location, Vector2 _speed, float _rotation, int _player, int _lives)
+        {
+            tankTexture = _tankTexture;
+            location = _location;
+            startingLocation = _location;
+            speed = _speed;
+            rotation = _rotation;
+            origin = new Vector2(this.tankTexture.Width / 2f, this.tankTexture.Height / 2f);
+            game = _game;
+            player = _player;
+            scale = 1f;
+            alive = true;
+            lives = _lives;
+            respawnParticles = new ParticleSpray(location, game, player, tankTexture, Color.Firebrick, 0);
+            deathParticles = new ParticleSpray(location, game, player, tankTexture, Color.Green, 0);
+            hitParticles = new ParticleSpray(location, game, player, tankTexture, Color.Silver, 0);
+            tankRect = new Rectangle((int)location.X - (tankTexture.Width / 2), (int)location.Y - (tankTexture.Height / 2), tankTexture.Width, tankTexture.Height);
+        }
 
         public virtual void Draw(SpriteBatch spriteBatch)
         {
