@@ -10,7 +10,7 @@ namespace SearchAndSort
     public class ConfusedTank : Tank
     {
         private bool fired;
-        private const float FIRE_DELAY = 1;
+        private const float FIRE_DELAY = 1.2f;
         private float delayOfFire = FIRE_DELAY;
         
         public ConfusedTank()
@@ -23,9 +23,23 @@ namespace SearchAndSort
             
         }
 
-        public override void Move(KeyboardState state)
+        public override void Move(KeyboardState state, GameTime gameTime)
         {
-            
+            int toDestroy = SearchAndDestroy(ref game.enemyTanks);
+            if (toDestroy > -1)
+            {
+                Tank tankToRotateTo = game.enemyTanks[toDestroy];
+                Console.WriteLine(AimAt(new Vector2(tankToRotateTo.location.X, tankToRotateTo.location.Y)));
+                SlowlyRotate(AimAt(new Vector2(tankToRotateTo.location.X, tankToRotateTo.location.Y)), gameTime);
+                if (Math.Abs(rotation - AimAt(new Vector2(tankToRotateTo.location.X, tankToRotateTo.location.Y))) < Math.PI/360 && tankToRotateTo.alive && fired == false)
+                {
+                    fired = true;
+                }
+            }
+            else
+            {
+                Explode();
+            }
         }
 
         public override void Update(KeyboardState state, GameTime gameTime)
@@ -43,39 +57,8 @@ namespace SearchAndSort
                     fired = false;
                 }
             }
-            
-            int toDestroy = SearchAndDestroy();
-            if (toDestroy > -1)
-            {
-                Tank tankToRotateTo = game.enemyTanks[toDestroy];
-                Console.WriteLine(AimAt(new Vector2(tankToRotateTo.location.X, tankToRotateTo.location.Y)));
-                SlowlyRotate(AimAt(new Vector2(tankToRotateTo.location.X, tankToRotateTo.location.Y)), gameTime);
-                if (Math.Abs(rotation - AimAt(new Vector2(tankToRotateTo.location.X, tankToRotateTo.location.Y))) < Math.PI/180 && fired == false)
-                {
-                    fired = true;
-                }
-            }
-            else
-            {
-                Explode();
-            }
         }
 
-        public int SearchAndDestroy()
-        {
-            //Unordered List Sort
-            int min = 100;
-            int mindex = -1;
-            for (int i = 0; i < game.enemyTanks.Count; i++)
-            {
-                if (game.enemyTanks[i].strength < min && game.enemyTanks[i].alive)
-                {
-                    min = game.enemyTanks[i].strength;
-                    mindex = i;
-                }
-            }
-
-            return mindex;
-        }
+        
     }
 }

@@ -115,6 +115,7 @@ namespace SearchAndSort
             if (alive)
             {
                 Move(state);
+                Move(state, gameTime);
                 updateRectangleLocation();
 				//Check collisions
 				colliding = false;
@@ -180,10 +181,10 @@ namespace SearchAndSort
         private void updateRectangleLocation() {
             tankRect = new Rectangle((int)location.X - (tankTexture.Width / 2), (int)location.Y - (tankTexture.Height / 2), tankTexture.Width, tankTexture.Height);
         }
-        public virtual void Move(KeyboardState state)
-        {
-            //Each tank overrides this.
-        }
+
+        public virtual void Move(KeyboardState state) {}
+        public virtual void Move(KeyboardState state, GameTime gameTime) {}
+        
         public void MoveLeft(bool isBoostPressed, bool isReversedPressed)
         {
             if (isBoostPressed)
@@ -248,15 +249,14 @@ namespace SearchAndSort
         {
             this.rotation = angle;
         }
-        public float AimAt(Vector2 target) {
+        public float AimAt(Vector2 target)
+        {
             if (target.X > location.X)
             {
-                return (float)(Math.Atan((location.Y - target.Y) / (location.X - target.X)));
+                return (float) Math.Atan((location - target).Y / (location - target).X);
             }
-            else
-            {
-                return (float)(Math.Atan((location.Y - target.Y) / (location.X - target.X)) + Math.PI);
-            }
+            return (float)(Math.Atan((location - target).Y / (location - target).X) + Math.PI);
+//            return (float) Math.Atan2((target - location).X, (target - location).Y);
         }
         public void SlowlyRotate(float targetRotation, GameTime gameTime) {
             Rotate(MathHelper.Lerp(rotation, targetRotation, (float)gameTime.ElapsedGameTime.TotalSeconds * 4));
@@ -310,6 +310,24 @@ namespace SearchAndSort
 				Die();
 			}
 		}
+        
+        public int SearchAndDestroy(ref List<EnemyTank> tanks)
+        {
+            //Unordered List Sort
+            int min = 100;
+            int mindex = -1;
+            for (int i = 0; i < tanks.Count; i++)
+            {
+                if (tanks[i].strength <= min && tanks[i].alive)
+                {
+                    min = tanks[i].strength;
+                    mindex = i;
+                }
+            }
+
+            return mindex;
+        }
+        
         public Collision isColliding(Rectangle possibleCollisionRect)
         {
             Rectangle intersect = Rectangle.Intersect(possibleCollisionRect, tankRect);

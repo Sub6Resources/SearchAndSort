@@ -84,8 +84,8 @@ namespace SearchAndSort
             background = Content.Load<Texture2D>("Stars");
 
             //Initialize controls
-            Controls player1Controls = new Controls(keyUp: Keys.W, keyLeft: Keys.A, keyDown: Keys.S, keyRight: Keys.D, keyBoost: Keys.Tab, keyReverse: Keys.LeftShift, keyFire: Keys.Space, keyExplode: Keys.E, keyMine: Keys.Q);
-            Controls player2Controls = new Controls(keyUp: Keys.Up, keyLeft: Keys.Left, keyDown: Keys.Down, keyRight: Keys.Right, keyBoost: Keys.RightShift, keyReverse: Keys.LeftShift, keyFire: Keys.Enter, keyExplode: Keys.RightAlt, keyMine: Keys.OemQuestion);
+            Controls player1Controls = new Controls(keyUp: Keys.W, keyLeft: Keys.A, keyDown: Keys.S, keyRight: Keys.D, keyBoost: Keys.Tab, keyReverse: Keys.LeftShift, keyFire: Keys.Space, keyExplode: Keys.E, keyMine: Keys.Q, keySearch: Keys.R);
+            Controls player2Controls = new Controls(keyUp: Keys.Up, keyLeft: Keys.Left, keyDown: Keys.Down, keyRight: Keys.Right, keyBoost: Keys.RightShift, keyReverse: Keys.LeftShift, keyFire: Keys.Enter, keyExplode: Keys.RightAlt, keyMine: Keys.OemQuestion, keySearch: Keys.OemComma);
 
             //Initialize tanks
             playerTanks.Add(new Player(this, Content.Load<Texture2D>("GreenTank"), new Vector2(100,100), new Vector2(3, 3), 0, 1, player1Controls));

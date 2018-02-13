@@ -14,8 +14,9 @@ namespace SearchAndSort
         public Keys MINE;
         public Keys BOOST;
         public Keys REVERSE;
+        public Keys SEARCH;
 
-        public Controls(Keys keyUp, Keys keyLeft, Keys keyRight, Keys keyDown, Keys keyFire, Keys keyExplode, Keys keyMine, Keys keyBoost, Keys keyReverse) {
+        public Controls(Keys keyUp, Keys keyLeft, Keys keyRight, Keys keyDown, Keys keyFire, Keys keyExplode, Keys keyMine, Keys keyBoost, Keys keyReverse, Keys keySearch) {
             UP = keyUp;
             LEFT = keyLeft;
             RIGHT = keyRight;
@@ -25,6 +26,7 @@ namespace SearchAndSort
             MINE = keyMine;
             BOOST = keyBoost;
             REVERSE = keyReverse;
+            SEARCH = keySearch;
         }
     }
 }

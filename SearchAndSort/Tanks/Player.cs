@@ -42,6 +42,15 @@ namespace SearchAndSort.Tanks
                 mineDelay = MINE_DELAY;
                 game.landmines.Add(new Landmine(game, new Rectangle((int)location.X, (int)location.Y, 20, 20), Vector2.Zero, Color.Orange, player, 0, tankTexture));
             }
+
+            if (state.IsKeyDown(controls.SEARCH))
+            {
+                int toAimAt = SearchAndDestroy(ref game.enemyTanks);
+                if (toAimAt > -1)
+                {
+                    SlowlyRotate(AimAt(game.enemyTanks[toAimAt].location), gameTime);
+                }
+            }
         }
         public override void Move(KeyboardState state)
         {
