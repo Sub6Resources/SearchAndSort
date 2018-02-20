@@ -103,8 +103,7 @@ namespace SearchAndSort
         {
             if (alive)
             {
-                spriteBatch.Draw(tankTexture, location, null, Color.White, rotation, origin, 1.0f, SpriteEffects.None,
-                    1);
+                spriteBatch.Draw(tankTexture, location, null, Color.White, rotation, origin, 1.0f, SpriteEffects.None, 1);
             }
             else
             {
@@ -241,12 +240,16 @@ namespace SearchAndSort
 
         public float AimAt(Vector2 target)
         {
-//            if (target.X > location.X)
-//            {
-//                return (float) Math.Atan((location - target).Y / (location - target).X);
-//            }
-//            return (float)(Math.Atan((location - target).Y / (location - target).X) + Math.PI);
-            return (float) Math.Atan2((location - target).Y, (location - target).X);
+            Vector2 targetVector = location - target;
+            if (target.Y > location.Y)
+            {
+                return (float) Math.Atan2(-targetVector.Y, -targetVector.X);
+            }
+            else
+            {
+                return (float) (Math.Atan2(targetVector.Y, targetVector.X) + Math.PI);
+            }
+            
         }
 
         public void SlowlyRotate(float targetRotation, GameTime gameTime)
