@@ -1,31 +1,48 @@
 ﻿using Microsoft.Xna.Framework.Audio;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
-using System.Collections.Generic;
 
 namespace SearchAndSort
 {
     public class Sound
     {
-        private SoundEffect death2Sound;
-        private SoundEffect derpSound;
-        private SoundEffect derp2Sound;
-        private SoundEffect derpDeathSound;
-        private SoundEffect derpHurtSound;
-        private SoundEffect elite1Sound;
-        private SoundEffect eliteAngerSound;
-        private SoundEffect eliteDeathSound;
+        public enum Sounds
+        {
+            DEATH2,
+            DERP,
+            DERP2,
+            DERPDEATH,
+            DERPHURT,
+            ELITE1,
+            ELITEANGER,
+            ELITEDEATH,
+            ELITEHIT,
+            ELITEROAR,
+            EXPLOSION,
+            KAMIANGER,
+            KAMICHARGE,
+            KAMIDEATH,
+            KAMIHURT,
+            LASERSHOOT
+        }
+
+        private readonly SoundEffect death2Sound;
+        private readonly SoundEffect derp2Sound;
+        private readonly SoundEffect derpDeathSound;
+        private readonly SoundEffect derpHurtSound;
+        private readonly SoundEffect derpSound;
+        private readonly SoundEffect elite1Sound;
+        private readonly SoundEffect eliteAngerSound;
+        private readonly SoundEffect eliteDeathSound;
         private SoundEffect eliteHitSound;
-        private SoundEffect eliteRoarSound;
-        private SoundEffect explosion;
-        private SoundEffect kamiAngerSound;
-        private SoundEffect kamiChargeSound;
-        private SoundEffect kamiDeathSound;
-        private SoundEffect kamiHurtSound;
-        private SoundEffect laserShootSound;
-        public enum Sounds { DEATH2, DERP, DERP2, DERPDEATH, DERPHURT, ELITE1, ELITEANGER, ELITEDEATH, ELITEHIT, ELITEROAR, EXPLOSION, KAMIANGER, KAMICHARGE, KAMIDEATH, KAMIHURT, LASERSHOOT }
-        public Sound(Game1 game) {
+        private readonly SoundEffect eliteRoarSound;
+        private readonly SoundEffect explosion;
+        private readonly SoundEffect kamiAngerSound;
+        private readonly SoundEffect kamiChargeSound;
+        private readonly SoundEffect kamiDeathSound;
+        private readonly SoundEffect kamiHurtSound;
+        private readonly SoundEffect laserShootSound;
+
+        public Sound(Game1 game)
+        {
             death2Sound = game.Content.Load<SoundEffect>("Death2");
             derpSound = game.Content.Load<SoundEffect>("Derp");
             derp2Sound = game.Content.Load<SoundEffect>("Derp2");
@@ -42,9 +59,10 @@ namespace SearchAndSort
             kamiHurtSound = game.Content.Load<SoundEffect>("KamiHurt");
             laserShootSound = game.Content.Load<SoundEffect>("Laser_Shoot");
         }
+
         public void PlaySound(Sounds sound)
         {
-            switch(sound)
+            switch (sound)
             {
                 case Sounds.DEATH2:
                     death2Sound.Play();
@@ -96,6 +114,5 @@ namespace SearchAndSort
                     break;
             }
         }
-
     }
 }

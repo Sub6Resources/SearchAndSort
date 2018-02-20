@@ -1,17 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace SearchAndSort
+﻿namespace SearchAndSort
 {
     public class Collision
     {
-        public enum Side { LEFT, RIGHT, TOP, BOTTOM };
-        public Side side;
+        public enum Side
+        {
+            LEFT,
+            RIGHT,
+            TOP,
+            BOTTOM
+        }
+
         public float depth;
-        public Collision() { }
+        public Side side;
+
+        public Collision()
+        {
+        }
+
         public Collision(Side _side, float _depth)
         {
             side = _side;

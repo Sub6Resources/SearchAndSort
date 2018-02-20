@@ -3,7 +3,7 @@
 
 /outputDir:bin
 /intermediateDir:obj
-/platform:Windows
+/platform:DesktopGL
 /config:
 /profile:Reach
 /compress:False
@@ -156,6 +156,13 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:RedTank.png
+
+#begin score.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:score.spritefont
 
 #begin Stars.png
 /importer:TextureImporter

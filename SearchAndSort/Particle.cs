@@ -1,30 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
 
 namespace SearchAndSort
 {
-    class Particle
+    internal class Particle
     {
         private Game1 game;
         public Rectangle particleRect;
-        public Vector2 speed;
-        public Color color { get; set; }
-        public int player { get; set; }
-        public float rotation { get; set; }
         public Texture2D particleTexture;
-        public bool alive { get; set; }
-        public bool decay { get; set; }
-        public bool fade { get; set; }
-        public float decayTime { get; set; }
-        public float initDecayTime { get; set; }
-        public Particle() { }
-        public Particle(Game1 _game, Rectangle _particleRect, Vector2 _speed, Color _color, int _player, float _rotation, Texture2D _particleTexture)
+        public Vector2 speed;
+
+        public Particle()
+        {
+        }
+
+        public Particle(Game1 _game, Rectangle _particleRect, Vector2 _speed, Color _color, int _player,
+            float _rotation, Texture2D _particleTexture)
         {
             game = _game;
             particleRect = _particleRect;
@@ -39,7 +30,9 @@ namespace SearchAndSort
             initDecayTime = decayTime;
             fade = false;
         }
-        public Particle(Game1 _game, Rectangle _particleRect, Vector2 _speed, Color _color, int _player, float _rotation, Texture2D _particleTexture, float _decayTime, bool _fade)
+
+        public Particle(Game1 _game, Rectangle _particleRect, Vector2 _speed, Color _color, int _player,
+            float _rotation, Texture2D _particleTexture, float _decayTime, bool _fade)
         {
             game = _game;
             particleRect = _particleRect;
@@ -54,33 +47,36 @@ namespace SearchAndSort
             initDecayTime = _decayTime;
             fade = _fade;
         }
+
+        public Color color { get; set; }
+        public int player { get; set; }
+        public float rotation { get; set; }
+        public bool alive { get; set; }
+        public bool decay { get; set; }
+        public bool fade { get; set; }
+        public float decayTime { get; set; }
+        public float initDecayTime { get; set; }
+
         public void Draw(SpriteBatch spriteBatch)
         {
-            if (alive)
-            {
-                spriteBatch.Draw(particleTexture, particleRect, color);
-            }
+            if (alive) spriteBatch.Draw(particleTexture, particleRect, color);
         }
+
         public void Update(GameTime gameTime)
         {
             if (alive)
             {
-                particleRect.X += (int)speed.X;
-                particleRect.Y += (int)speed.Y;
-                if(decay)
+                particleRect.X += (int) speed.X;
+                particleRect.Y += (int) speed.Y;
+                if (decay)
                 {
-                    decayTime += (float)gameTime.ElapsedGameTime.TotalMilliseconds / 1000;
-                    if(fade)
-                    {
-                        color = Color.Lerp(color, Color.Transparent, decayTime/initDecayTime);
-                    }
-                    if (decayTime >= initDecayTime)
-                    {
-                        Die();
-                    }
+                    decayTime += (float) gameTime.ElapsedGameTime.TotalMilliseconds / 1000;
+                    if (fade) color = Color.Lerp(color, Color.Transparent, decayTime / initDecayTime);
+                    if (decayTime >= initDecayTime) Die();
                 }
             }
         }
+
         public void Die()
         {
             alive = false;

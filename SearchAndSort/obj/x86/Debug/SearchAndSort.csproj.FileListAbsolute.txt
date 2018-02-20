@@ -90,3 +90,4 @@
 /Users/59485/Projects/SearchAndSort/SearchAndSort/bin/Debug/Content/RedTank.png
 /Users/59485/Projects/SearchAndSort/SearchAndSort/bin/Debug/Content/Stars.png
 /Users/59485/Projects/SearchAndSort/SearchAndSort/bin/Debug/Content/wall.jpg
+/Users/59485/Projects/SearchAndSort/SearchAndSort/bin/Debug/Content/score.xnb

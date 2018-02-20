@@ -1,6 +1,6 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using System;
 
 namespace SearchAndSort
 {
@@ -20,9 +20,10 @@ namespace SearchAndSort
             texture = _texture;
             type = _type;
         }
+
         public void Update(GameTime gameTime)
         {
-            switch(type)
+            switch (type)
             {
                 case AIR:
                     break;
@@ -30,9 +31,10 @@ namespace SearchAndSort
                     break;
             }
         }
+
         public void Draw(SpriteBatch spriteBatch)
         {
-            switch(type)
+            switch (type)
             {
                 case AIR:
                     break;
@@ -41,35 +43,45 @@ namespace SearchAndSort
                     break;
             }
         }
+
         public Collision isColliding(Rectangle possibleCollisionRect)
         {
-            Rectangle intersect = Rectangle.Intersect(possibleCollisionRect, collisionRect);
+            var intersect = Rectangle.Intersect(possibleCollisionRect, collisionRect);
             if (type == WALL)
-            {
                 if (intersect.Width != 0 && intersect.Height != 0)
                 {
-                    if (possibleCollisionRect.Top < collisionRect.Bottom && Math.Abs(intersect.Width) > Math.Abs(intersect.Height) && possibleCollisionRect.Y > collisionRect.Y)
+                    if (possibleCollisionRect.Top < collisionRect.Bottom &&
+                        Math.Abs(intersect.Width) > Math.Abs(intersect.Height) &&
+                        possibleCollisionRect.Y > collisionRect.Y)
                     {
                         float depth = intersect.Height;
                         return new Collision(Collision.Side.TOP, depth);
                     }
-                    if (possibleCollisionRect.Bottom > collisionRect.Top && Math.Abs(intersect.Width) > Math.Abs(intersect.Height))
+
+                    if (possibleCollisionRect.Bottom > collisionRect.Top &&
+                        Math.Abs(intersect.Width) > Math.Abs(intersect.Height))
                     {
                         float depth = intersect.Height;
                         return new Collision(Collision.Side.BOTTOM, depth);
                     }
-                    if (possibleCollisionRect.Left < collisionRect.Right && Math.Abs(intersect.Width) < Math.Abs(intersect.Height) && possibleCollisionRect.Right > collisionRect.Right)
+
+                    if (possibleCollisionRect.Left < collisionRect.Right &&
+                        Math.Abs(intersect.Width) < Math.Abs(intersect.Height) &&
+                        possibleCollisionRect.Right > collisionRect.Right)
                     {
                         float depth = intersect.Width;
                         return new Collision(Collision.Side.LEFT, depth);
                     }
-                    if (possibleCollisionRect.Right > collisionRect.Right - collisionRect.Width && possibleCollisionRect.Right > collisionRect.Left && Math.Abs(intersect.Width) < Math.Abs(intersect.Height))
+
+                    if (possibleCollisionRect.Right > collisionRect.Right - collisionRect.Width &&
+                        possibleCollisionRect.Right > collisionRect.Left &&
+                        Math.Abs(intersect.Width) < Math.Abs(intersect.Height))
                     {
                         float depth = intersect.Width;
                         return new Collision(Collision.Side.RIGHT, depth);
                     }
                 }
-            }
+
             return new Collision();
         }
     }
