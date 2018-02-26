@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.InteropServices.ComTypes;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -12,6 +13,13 @@ namespace SearchAndSort
     /// </summary>
     public class Game1 : Game
     {
+        private const int MAIN_MENU = 0;
+        private const int SEARCH_CIRCLE = 1;
+        private const int SORT_LINE = 2;
+        
+        private int gameState = MAIN_MENU;
+        
+        
         //Extra game stuff
         private Texture2D background;
         public List<Bullet> bullets = new List<Bullet>();
@@ -42,6 +50,7 @@ namespace SearchAndSort
         ///     related content.  Calling base.Initialize will enumerate through any components
         ///     and initialize them as well.
         /// </summary>
+        /// This is the global initialize for all levels.
         protected override void Initialize()
         {
             //Initialize generic texture
@@ -61,29 +70,34 @@ namespace SearchAndSort
             //Initialize Map
             map = new Map(this, graphics.PreferredBackBufferWidth, graphics.PreferredBackBufferHeight);
 
-            //Map
-            var levelMap =
-                "11111111111111111111\n" +
-                "10000000000000000001\n" +
-                "10000001111110000001\n" +
-                "10000010000001000001\n" +
-                "10000100000000100001\n" +
-                "10001000000000010001\n" +
-                "10010000000000001001\n" +
-                "10010000000000001001\n" +
-                "10000000000000000001\n" +
-                "10000000000000000001\n" +
-                "10000000000000000001\n" +
-                "10000000000000000001\n" +
-                "10000000000000000001\n" +
-                "10000000000000000001\n" +
-                "10000000000000000001\n" +
-                "11111111111111111111";
-            map.setMap(levelMap);
-
             //Initialize window background
             background = Content.Load<Texture2D>("Stars");
 
+            
+//            enemyTanks.Add(new EnemyTank(this, Content.Load<Texture2D>("PinkTank"), new Vector2(200, 200), new Vector2(5, 5), 0, 100, 1));
+//            enemyTanks.Add(new KamikazeTank(this, Content.Load<Texture2D>("YellowTank"), new Vector2(400, 400), new Vector2(3, 3), 0, 3));
+//            enemyTanks.Add(new StaticTank(this, Content.Load<Texture2D>("YellowTank"), new Vector2(300, 300), new Vector2(3, 3), 0, 3));
+            
+            //Initialize scoring system
+            scoreManager = new Score(this);
+
+            //Initialize sound system.
+            sound = new Sound(this);
+            
+            Initialize(MAIN_MENU);
+
+            //Initialize base
+            base.Initialize();
+        }
+
+        /// <summary>
+        /// Starts a level.
+        /// </summary>
+        /// <param name="level">The desired level.</param>
+        private void Initialize(int level)
+        {
+            playerTanks.Clear();
+            enemyTanks.Clear();
             //Initialize controls
             var player1Controls = new Controls(Keys.W, Keys.A, keyDown: Keys.S, keyRight: Keys.D, keyBoost: Keys.Tab,
                 keyReverse: Keys.LeftShift, keyFire: Keys.Space, keyExplode: Keys.E, keyMine: Keys.Q,
@@ -92,46 +106,106 @@ namespace SearchAndSort
                 keyBoost: Keys.RightShift, keyReverse: Keys.LeftShift, keyFire: Keys.Enter, keyExplode: Keys.RightAlt,
                 keyMine: Keys.OemQuestion, keySearch: Keys.OemComma);
 
-            //Initialize tanks
-            playerTanks.Add(new Player(this, Content.Load<Texture2D>("GreenTank"), new Vector2(100, 100),
-                new Vector2(3, 3), 0, 1, Color.Green, player1Controls));
-            playerTanks.Add(new Player(this, Content.Load<Texture2D>("RedTank"),
-                new Vector2(map.screenWidth - 100, 100), new Vector2(3, 3), MathHelper.Pi, 2, Color.Red, player2Controls));
-            enemyTanks.Add(new EnemyTank(this, Content.Load<Texture2D>("PinkTank"), new Vector2(200, 200),
-                new Vector2(5, 5), 0, 100, 1));
-            //enemyTanks.Add(new KamikazeTank(this, Content.Load<Texture2D>("YellowTank"), new Vector2(400, 400), new Vector2(3, 3), 0, 3));
-            //enemyTanks.Add(new StaticTank(this, Content.Load<Texture2D>("YellowTank"), new Vector2(300, 300), new Vector2(3, 3), 0, 3));
-            playerTanks.Add(new ConfusedTank(this, Content.Load<Texture2D>("YellowTank"),
-                new Vector2(graphics.PreferredBackBufferWidth / 2, graphics.PreferredBackBufferHeight / 2),
-                Vector2.Zero, 0, 3, Color.Yellow));
-
-            const int NUM_TANKS = 36;
-
-            var randy = new Random();
-
-            //Generate circle of static tanks
-            for (var i = 0; i < NUM_TANKS; i++)
+            Random randy = new Random();
+            
+            switch (level)
             {
-                var centerX = graphics.PreferredBackBufferWidth / 2;
-                var centerY = graphics.PreferredBackBufferHeight / 2;
-                var angle = 360 / NUM_TANKS * i * (Math.PI / 180);
-                var circleRadius = 200;
+                case MAIN_MENU:
+                    break;
+                case SEARCH_CIRCLE:
+                    //Map
+                    var searchCircleMap =
+                        "11111111111111111111\n" +
+                        "10000000000000000001\n" +
+                        "10000001111110000001\n" +
+                        "10000010000001000001\n" +
+                        "10000100000000100001\n" +
+                        "10001000000000010001\n" +
+                        "10000000000000000001\n" +
+                        "10000000000000000001\n" +
+                        "10000000000000000001\n" +
+                        "10000000000000000001\n" +
+                        "10000000000000000001\n" +
+                        "10000000000000000001\n" +
+                        "10000000000000000001\n" +
+                        "10000000000000000001\n" +
+                        "10000000000000000001\n" +
+                        "11111111111111111111";
+                    map.setMap(searchCircleMap);
+                    
+                    
+                    //Initialize tanks
+                    playerTanks.Add(new Player(this, Content.Load<Texture2D>("GreenTank"), new Vector2(100, 100),
+                        new Vector2(3, 3), 0, 1, Color.Green, player1Controls));
+                    playerTanks.Add(new Player(this, Content.Load<Texture2D>("RedTank"),
+                        new Vector2(map.screenWidth - 100, 100), new Vector2(3, 3), MathHelper.Pi, 2, Color.Red, player2Controls));
+                    playerTanks.Add(new ConfusedTank(this, Content.Load<Texture2D>("YellowTank"),
+                        new Vector2(graphics.PreferredBackBufferWidth / 2, graphics.PreferredBackBufferHeight / 2),
+                        Vector2.Zero, 0, 3, Color.Yellow));
+                    const int NUM_TANKS_SEARCHCIRCLE = 8;
+                    //Generate circle of static tanks
+                    for (var i = 0; i < NUM_TANKS_SEARCHCIRCLE; i++)
+                    {
+                        var centerX = graphics.PreferredBackBufferWidth / 2;
+                        var centerY = graphics.PreferredBackBufferHeight / 2;
+                        var angle = 360 / NUM_TANKS_SEARCHCIRCLE * i * (Math.PI / 180);
+                        var circleRadius = 200;
+        
+                        var pointX = (int) Math.Round(Math.Cos(angle) * circleRadius + centerX);
+                        var pointY = (int) Math.Round(Math.Sin(angle) * circleRadius + centerY);
+        
+                        enemyTanks.Add(new StaticTank(this, Content.Load<Texture2D>("GreenTank"), new Vector2(pointX, pointY),
+                            new Vector2(3, 3), (float) (angle + Math.PI), randy.Next(0, 100), 1));
+                    }
+                    break;
+                case SORT_LINE:
+                    //Map
+                    var sortLineMap =
+                        "11111111111111111111\n" +
+                        "10000000000000000001\n" +
+                        "10000001111110000001\n" +
+                        "10000010000001000001\n" +
+                        "10000100000000100001\n" +
+                        "10001000000000010001\n" +
+                        "10000000000000000001\n" +
+                        "10000000000000000001\n" +
+                        "10000000000000000001\n" +
+                        "10000000000000000001\n" +
+                        "10000000000000000001\n" +
+                        "10000000000000000001\n" +
+                        "10000000000000000001\n" +
+                        "10000000000000000001\n" +
+                        "10000000000000000001\n" +
+                        "11111111111111111111";
+                    map.setMap(sortLineMap);
+                    //Initialize tanks
+                    playerTanks.Add(new Player(this, Content.Load<Texture2D>("GreenTank"), new Vector2(100, 100),
+                        new Vector2(3, 3), 0, 1, Color.Green, player1Controls));
+                    playerTanks.Add(new Player(this, Content.Load<Texture2D>("RedTank"),
+                        new Vector2(map.screenWidth - 100, 100), new Vector2(3, 3), MathHelper.Pi, 2, Color.Red, player2Controls));
+                    
+                    const int NUM_TANKSLINE = 8;
 
-                var pointX = (int) Math.Round(Math.Cos(angle) * circleRadius + centerX);
-                var pointY = (int) Math.Round(Math.Sin(angle) * circleRadius + centerY);
+            
+                    //Generate line of static tanks
+                    for (var i = 0; i < NUM_TANKSLINE; i++)
+                    {
+                        var centerX = graphics.PreferredBackBufferWidth / 2;
+                        var centerY = graphics.PreferredBackBufferHeight / 2;
+                        var margin = 100;
+                        var width = graphics.PreferredBackBufferWidth - 100;
 
-                enemyTanks.Add(new StaticTank(this, Content.Load<Texture2D>("GreenTank"), new Vector2(pointX, pointY),
-                    new Vector2(3, 3), (float) (angle + Math.PI), randy.Next(0, 100), 1));
+                        var pointX = margin + width / NUM_TANKSLINE * i;
+                        var pointY = centerY;
+                
+                        enemyTanks.Add(new StaticTank(this, Content.Load<Texture2D>("GreenTank"), new Vector2(pointX, pointY),
+                            new Vector2(3,3), 0f, randy.Next(0, 100), 1));
+                    }
+                    
+                    break;
             }
 
-            //Initialize scoring system
-            scoreManager = new Score(this);
-
-            //Initialize sound system.
-            sound = new Sound(this);
-
-            //Initialize base
-            base.Initialize();
+            gameState = level;
         }
 
         /// <summary>
@@ -161,25 +235,64 @@ namespace SearchAndSort
         protected override void Update(GameTime gameTime)
         {
             var state = Keyboard.GetState();
+            
+            //Level Logic
+            switch (gameState)
+            {
+                case MAIN_MENU:
+                    if (state.IsKeyDown(Keys.Escape) && state.IsKeyDown(Keys.LeftControl))
+                        Exit();
+                    if(state.IsKeyDown(Keys.D1))
+                        Initialize(SEARCH_CIRCLE);
+                    if(state.IsKeyDown(Keys.D2))
+                        Initialize(SORT_LINE);
+                    break;
+                case SEARCH_CIRCLE:
+                    if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || state.IsKeyDown(Keys.Escape))
+                        Initialize(MAIN_MENU);
+                    updateGame(gameTime, state);
+                    break;
+                case SORT_LINE:
+                    if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || state.IsKeyDown(Keys.Escape))
+                        Initialize(MAIN_MENU);
+                    updateGame(gameTime, state);
+                    BubbleSort();
+                    break;
+            }
+            
+            //Update base
+            base.Update(gameTime);
+        }
 
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || state.IsKeyDown(Keys.Escape))
-                Exit();
-
+        private void updateGame(GameTime gameTime, KeyboardState state)
+        {
             //Update Map
             map.Update(gameTime);
-
+                    
             //Update Tanks
             foreach (var player in playerTanks) player.Update(state, gameTime);
             foreach (var enemyTank in enemyTanks) enemyTank.Update(state, gameTime);
-
+                    
             //Update Game Objects
             foreach (var landmine in landmines) landmine.Update();
             foreach (var bullet in bullets)
                 if (bullet != null)
                     bullet.Update();
+        }
 
-            //Update base
-            base.Update(gameTime);
+        private void BubbleSort()
+        {
+            //Iterate through the static tanks
+            for (var i = 0; i < enemyTanks.Count; i++)
+            {
+                var staticTank = (StaticTank) enemyTanks[i];
+                if (staticTank.Moving)
+                    return;
+                if (staticTank.strength > enemyTanks[i].strength)
+                {
+                    staticTank.SetTarget(new Vector2(100, 100));
+                }
+            }
         }
 
         /// <summary>
@@ -192,6 +305,23 @@ namespace SearchAndSort
 
             spriteBatch.Begin();
 
+            switch (gameState)
+            {
+                case MAIN_MENU:
+                    break;
+                case SEARCH_CIRCLE:
+                    drawGame(spriteBatch);
+                    break;
+                case SORT_LINE:
+                    drawGame(spriteBatch);
+                    break;
+            }
+
+            spriteBatch.End();
+
+            base.Draw(gameTime);
+        }
+        private void drawGame(SpriteBatch spriteBatch) {
             //Draw background
             spriteBatch.Draw(background, new Rectangle(0, 0, map.screenWidth, map.screenHeight), Color.White);
 
@@ -210,10 +340,6 @@ namespace SearchAndSort
 
             //Draw score
             scoreManager.Draw(spriteBatch);
-
-            spriteBatch.End();
-
-            base.Draw(gameTime);
         }
     }
 }

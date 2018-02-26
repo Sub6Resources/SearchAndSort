@@ -257,6 +257,29 @@ namespace SearchAndSort
             Rotate(MathHelper.Lerp(rotation, targetRotation, (float) gameTime.ElapsedGameTime.TotalSeconds * 4));
         }
 
+        public bool SlowlyMoveTo(Vector2 target, GameTime gameTime)
+        {
+            if (target.X > location.X)
+            {
+                location.X += speed.X * (gameTime.ElapsedGameTime.Milliseconds / 2000.0f) * Math.Abs(target.X - location.X);
+            }
+            else if (target.X < location.X)
+            {
+                location.X -= speed.X * (gameTime.ElapsedGameTime.Milliseconds / 2000.0f) * Math.Abs(target.X - location.X);
+            }
+
+            if (target.Y > location.Y)
+            {
+                location.Y += speed.Y * (gameTime.ElapsedGameTime.Milliseconds / 2000.0f) * Math.Abs(target.Y - location.Y);
+            } 
+            else if (target.Y < location.Y)
+            {
+                location.Y -= speed.Y * (gameTime.ElapsedGameTime.Milliseconds / 2000.0f) * Math.Abs(target.Y - location.Y);
+            }
+
+            return Math.Abs(target.X - location.X) < 5 && Math.Abs(target.Y - location.Y) < 5;
+        }
+
         public Bullet Fire()
         {
             if (alive)

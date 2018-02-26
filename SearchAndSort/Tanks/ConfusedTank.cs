@@ -28,6 +28,7 @@ namespace SearchAndSort
                 Tank tankToRotateTo = game.enemyTanks[toDestroy];
                 Console.WriteLine(AimAt(new Vector2(tankToRotateTo.location.X, tankToRotateTo.location.Y)));
                 SlowlyRotate(AimAt(new Vector2(tankToRotateTo.location.X, tankToRotateTo.location.Y)), gameTime);
+                SlowlyMoveTo(tankToRotateTo.location, gameTime);
                 if (Math.Abs(rotation - AimAt(new Vector2(tankToRotateTo.location.X, tankToRotateTo.location.Y))) <
                     Math.PI / 360 && tankToRotateTo.alive && fired == false) fired = true;
             }
