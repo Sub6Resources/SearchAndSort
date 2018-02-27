@@ -28,14 +28,17 @@ namespace SearchAndSort
 
         public override void Update(KeyboardState state, GameTime gameTime)
         {
-            SlowlyRotate(AimAt(game.playerTanks[0].location), gameTime);
             if (Moving)
             {
+                Rotate(AimAt(target));
                 if (SlowlyMoveTo(target, gameTime))
                 {
                     //Called if tank is done moving
                     Moving = false;
                 }
+            }
+            else {
+                SlowlyRotate(AimAt(game.playerTanks[0].location), gameTime);
             }
             base.Update(state, gameTime);
         }
@@ -57,7 +60,7 @@ namespace SearchAndSort
             spriteBatch.DrawString(
                 spriteFont,
                 ""+strength,
-                location,
+                location+new Vector2(-10, 15),
                 Color.GhostWhite);
         }
     }

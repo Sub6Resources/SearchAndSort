@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PipelineBuildEvent xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <SourceFile>/Users/59485/Projects/SearchAndSort/SearchAndSort/Content/score.spritefont</SourceFile>
-  <SourceTime>2017-03-01T08:05:36-07:00</SourceTime>
-  <DestFile>/Users/59485/Projects/SearchAndSort/SearchAndSort/Content/bin/DesktopGL/Content/score.xnb</DestFile>
-  <DestTime>2018-02-20T08:30:52-07:00</DestTime>
+  <SourceFile>/Users/whitaker/Projects/SearchAndSort/SearchAndSort/Content/score.spritefont</SourceFile>
+  <SourceTime>2018-02-26T15:28:12-07:00</SourceTime>
+  <DestFile>/Users/whitaker/Projects/SearchAndSort/SearchAndSort/Content/bin/DesktopGL/Content/score.xnb</DestFile>
+  <DestTime>2018-02-26T15:39:04-07:00</DestTime>
   <Importer>FontDescriptionImporter</Importer>
-  <ImporterTime>2018-02-20T07:28:26-07:00</ImporterTime>
+  <ImporterTime>2018-02-26T10:15:24-07:00</ImporterTime>
   <Processor>FontDescriptionProcessor</Processor>
-  <ProcessorTime>2018-02-20T07:28:26-07:00</ProcessorTime>
+  <ProcessorTime>2018-02-26T10:15:24-07:00</ProcessorTime>
   <Parameters>
     <Key>PremultiplyAlpha</Key>
     <Value>True</Value>

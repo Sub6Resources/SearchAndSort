@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Runtime.InteropServices.ComTypes;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -202,6 +201,13 @@ namespace SearchAndSort
                             new Vector2(3,3), 0f, randy.Next(0, 100), 1));
                     }
                     
+                    //Reset variables
+                    doingBigMove = false;
+                    tankDoingBigMove = 0;
+                    doingLittleMove = false;
+                    doneWithOneSort = false;
+                    tankDoingLittleMove = 0;
+                    movingTanksLocation = Vector2.Zero;
                     break;
             }
 
@@ -280,6 +286,13 @@ namespace SearchAndSort
                     bullet.Update();
         }
 
+        private bool doingBigMove;
+        private bool doingLittleMove;
+        private bool doneWithOneSort;
+        private int tankDoingBigMove;
+        private int tankDoingLittleMove;
+        private Vector2 movingTanksLocation;
+        
         private void BubbleSort()
         {
             //Iterate through the static tanks
@@ -288,9 +301,59 @@ namespace SearchAndSort
                 var staticTank = (StaticTank) enemyTanks[i];
                 if (staticTank.Moving)
                     return;
-                if (staticTank.strength > enemyTanks[i].strength)
+            }
+            for (var i = 0; i < enemyTanks.Count; i++)
+            {
+                var staticTank = (StaticTank) enemyTanks[i];
+                try
                 {
-                    staticTank.SetTarget(new Vector2(100, 100));
+                    if (staticTank.strength > enemyTanks[i + 1].strength && !doingBigMove)
+                    {
+                        movingTanksLocation = staticTank.location;
+                        staticTank.SetTarget(new Vector2(graphics.PreferredBackBufferWidth / 2 , 500));
+                        doingBigMove = true;
+                        tankDoingBigMove = i;
+                        return;
+                    }
+
+                    if (doingBigMove && !doingLittleMove)
+                    {
+                        if (enemyTanks[tankDoingBigMove].strength > enemyTanks[tankDoingBigMove + 1].strength)
+                        {
+                            //Move the next tank to the old location.
+                            ((StaticTank) enemyTanks[tankDoingBigMove + 1]).SetTarget(movingTanksLocation);
+                            movingTanksLocation = enemyTanks[tankDoingBigMove + 1].location;
+                            doingLittleMove = true;
+                            tankDoingLittleMove = tankDoingBigMove + 1;
+                            return;
+                        }
+                        doingBigMove = false;
+                        doingLittleMove = false;
+                        doneWithOneSort = false;
+                        ((StaticTank) enemyTanks[tankDoingBigMove]).SetTarget(movingTanksLocation);
+                        return;
+                    }
+
+                    if (doingLittleMove)
+                    {
+                        doingLittleMove = false;
+                        int temp = tankDoingBigMove;
+                        tankDoingBigMove = tankDoingLittleMove;
+                        tankDoingLittleMove = temp;
+                        EnemyTank tempTank = enemyTanks[tankDoingBigMove];
+                        enemyTanks[tankDoingBigMove] = enemyTanks[tankDoingLittleMove];
+                        enemyTanks[tankDoingLittleMove] = tempTank;
+                      
+                        return;
+                    }
+                }
+                catch (ArgumentOutOfRangeException)
+                {
+                    doingBigMove = false;
+                    doingLittleMove = false;
+                    doneWithOneSort = false;
+                    ((StaticTank) enemyTanks[tankDoingBigMove]).SetTarget(movingTanksLocation);
+                    return;
                 }
             }
         }
