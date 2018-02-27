@@ -1,15 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ContentModelStore">
-    <e p="$USER_HOME$/Library/Caches/Rider2017.3/resharper-host/local/Transient/ReSharperHost/v11/SolutionCaches/_SearchAndSort.-1610913438.00" t="ExcludeRecursive" />
+    <e p="$USER_HOME$/Library/Caches/Rider2017.3/resharper-host/local/Transient/ReSharperHost/v11/SolutionCaches/_SearchAndSort.1970605942.00" t="ExcludeRecursive" />
     <e p="$PROJECT_DIR$" t="IncludeFlat">
       <e p="packages" t="ExcludeRecursive" />
       <e p="SearchAndSort" t="IncludeRecursive">
         <e p="app.manifest" t="Include" />
         <e p="bin" t="ExcludeRecursive" />
         <e p="Bullet.cs" t="Include" />
+        <e p="Button.cs" t="Include" />
         <e p="Collision.cs" t="Include" />
         <e p="Content" t="Include">
+          <e p="Arial.spritefont" t="Include" />
           <e p="Content.mgcb" t="Include" />
           <e p="Death2.wav" t="Include" />
           <e p="Derp.wav" t="Include" />
@@ -44,6 +46,7 @@
         <e p="libopenal.1.dylib" t="Include" />
         <e p="libSDL2-2.0.0.dylib" t="Include" />
         <e p="Map.cs" t="Include" />
+        <e p="Menu.cs" t="Include" />
         <e p="MonoGame.Framework.dll.config" t="Include" />
         <e p="obj" t="ExcludeRecursive" />
         <e p="Particle.cs" t="Include" />

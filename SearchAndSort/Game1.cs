@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -15,6 +16,8 @@ namespace SearchAndSort
         private const int MAIN_MENU = 0;
         private const int SEARCH_CIRCLE = 1;
         private const int SORT_LINE = 2;
+
+        private string[] listOfLevels = {"Linear Search (O = n)", "Bubble Sort (O = n-1)"};
         
         private int gameState = MAIN_MENU;
         
@@ -36,6 +39,7 @@ namespace SearchAndSort
         public Sound sound;
         private SpriteBatch spriteBatch;
         public Texture2D texture2d;
+        public Menu menu;
 
         public Game1()
         {
@@ -83,6 +87,8 @@ namespace SearchAndSort
             //Initialize sound system.
             sound = new Sound(this);
             
+            menu = new Menu(this, listOfLevels);
+            
             Initialize(MAIN_MENU);
 
             //Initialize base
@@ -97,6 +103,7 @@ namespace SearchAndSort
         {
             playerTanks.Clear();
             enemyTanks.Clear();
+            scoreManager.Reset();
             //Initialize controls
             var player1Controls = new Controls(Keys.W, Keys.A, keyDown: Keys.S, keyRight: Keys.D, keyBoost: Keys.Tab,
                 keyReverse: Keys.LeftShift, keyFire: Keys.Space, keyExplode: Keys.E, keyMine: Keys.Q,
@@ -120,14 +127,14 @@ namespace SearchAndSort
                         "10000010000001000001\n" +
                         "10000100000000100001\n" +
                         "10001000000000010001\n" +
-                        "10000000000000000001\n" +
-                        "10000000000000000001\n" +
-                        "10000000000000000001\n" +
-                        "10000000000000000001\n" +
-                        "10000000000000000001\n" +
-                        "10000000000000000001\n" +
-                        "10000000000000000001\n" +
-                        "10000000000000000001\n" +
+                        "10001000000000010001\n" +
+                        "10001000000000010001\n" +
+                        "10001000000000010001\n" +
+                        "10001000000000010001\n" +
+                        "10001000000000010001\n" +
+                        "10000100000000100001\n" +
+                        "10000010000001000001\n" +
+                        "10000001111110000001\n" +
                         "10000000000000000001\n" +
                         "11111111111111111111";
                     map.setMap(searchCircleMap);
@@ -141,7 +148,7 @@ namespace SearchAndSort
                     playerTanks.Add(new ConfusedTank(this, Content.Load<Texture2D>("YellowTank"),
                         new Vector2(graphics.PreferredBackBufferWidth / 2, graphics.PreferredBackBufferHeight / 2),
                         Vector2.Zero, 0, 3, Color.Yellow));
-                    const int NUM_TANKS_SEARCHCIRCLE = 8;
+                    const int NUM_TANKS_SEARCHCIRCLE = 16;
                     //Generate circle of static tanks
                     for (var i = 0; i < NUM_TANKS_SEARCHCIRCLE; i++)
                     {
@@ -170,10 +177,10 @@ namespace SearchAndSort
                         "10000000000000000001\n" +
                         "10000000000000000001\n" +
                         "10000000000000000001\n" +
-                        "10000000000000000001\n" +
-                        "10000000000000000001\n" +
-                        "10000000000000000001\n" +
-                        "10000000000000000001\n" +
+                        "10001000000000010001\n" +
+                        "10000100000000100001\n" +
+                        "10000010000001000001\n" +
+                        "10000001111110000001\n" +
                         "10000000000000000001\n" +
                         "11111111111111111111";
                     map.setMap(sortLineMap);
@@ -183,7 +190,7 @@ namespace SearchAndSort
                     playerTanks.Add(new Player(this, Content.Load<Texture2D>("RedTank"),
                         new Vector2(map.screenWidth - 100, 100), new Vector2(3, 3), MathHelper.Pi, 2, Color.Red, player2Controls));
                     
-                    const int NUM_TANKSLINE = 8;
+                    const int NUM_TANKSLINE = 16;
 
             
                     //Generate line of static tanks
@@ -364,13 +371,14 @@ namespace SearchAndSort
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.WhiteSmoke);
+            GraphicsDevice.Clear(Color.DarkGray);
 
             spriteBatch.Begin();
 
             switch (gameState)
             {
                 case MAIN_MENU:
+                    menu.Draw(spriteBatch);
                     break;
                 case SEARCH_CIRCLE:
                     drawGame(spriteBatch);

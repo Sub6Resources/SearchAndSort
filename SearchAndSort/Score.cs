@@ -8,12 +8,8 @@ namespace SearchAndSort
     {
         private readonly Game1 game;
         private int numPlayers;
-        private readonly List<int> score;
+        private List<int> score;
         private SpriteFont spriteFont;
-
-        public Score()
-        {
-        }
 
         public Score(Game1 _game)
         {
@@ -46,6 +42,12 @@ namespace SearchAndSort
                     "Player " + player.player + ": " + score[player.player] + " points. Lives: "+player.lives,
                     new Vector2(48, 48 + 16 * player.player),
                     player.alive ? player.color : Color.DimGray);
+        }
+
+        public void Reset()
+        {
+            score = new List<int>();
+            for (var i = 0; i < 100; ++i) score.Add(0);
         }
     }
 }
