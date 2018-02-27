@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<SourceFileCollection xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Profile>Reach</Profile>
+  <Platform>DesktopGL</Platform>
+  <Config />
+  <SourceFiles>
+    <File>/Users/whitaker/Projects/SearchAndSort/SearchAndSort/Content/Death2.wav</File>
+    <File>/Users/whitaker/Projects/SearchAndSort/SearchAndSort/Content/Derp.wav</File>
+    <File>/Users/whitaker/Projects/SearchAndSort/SearchAndSort/Content/Derp2.wav</File>
+    <File>/Users/whitaker/Projects/SearchAndSort/SearchAndSort/Content/derpDeath.wav</File>
+    <File>/Users/whitaker/Projects/SearchAndSort/SearchAndSort/Content/DerpHurt.wav</File>
+    <File>/Users/whitaker/Projects/SearchAndSort/SearchAndSort/Content/eenewDerpDeath.wav</File>
+    <File>/Users/whitaker/Projects/SearchAndSort/SearchAndSort/Content/eenewKamiDeath.wav</File>
+    <File>/Users/whitaker/Projects/SearchAndSort/SearchAndSort/Content/Elite1.wav</File>
+    <File>/Users/whitaker/Projects/SearchAndSort/SearchAndSort/Content/EliteAnger.wav</File>
+    <File>/Users/whitaker/Projects/SearchAndSort/SearchAndSort/Content/EliteDeath.wav</File>
+    <File>/Users/whitaker/Projects/SearchAndSort/SearchAndSort/Content/EliteHit.wav</File>
+    <File>/Users/whitaker/Projects/SearchAndSort/SearchAndSort/Content/EliteRoar.wav</File>
+    <File>/Users/whitaker/Projects/SearchAndSort/SearchAndSort/Content/Explosion.wav</File>
+    <File>/Users/whitaker/Projects/SearchAndSort/SearchAndSort/Content/GreenTank.png</File>
+    <File>/Users/whitaker/Projects/SearchAndSort/SearchAndSort/Content/KamiAnger.wav</File>
+    <File>/Users/whitaker/Projects/SearchAndSort/SearchAndSort/Content/KamiCharge.wav</File>
+    <File>/Users/whitaker/Projects/SearchAndSort/SearchAndSort/Content/KamiDeath.wav</File>
+    <File>/Users/whitaker/Projects/SearchAndSort/SearchAndSort/Content/KamiHurt.wav</File>
+    <File>/Users/whitaker/Projects/SearchAndSort/SearchAndSort/Content/Laser_Shoot.wav</File>
+    <File>/Users/whitaker/Projects/SearchAndSort/SearchAndSort/Content/PinkTank.png</File>
+    <File>/Users/whitaker/Projects/SearchAndSort/SearchAndSort/Content/RedTank.png</File>
+    <File>/Users/whitaker/Projects/SearchAndSort/SearchAndSort/Content/score.spritefont</File>
+    <File>/Users/whitaker/Projects/SearchAndSort/SearchAndSort/Content/Stars.png</File>
+    <File>/Users/whitaker/Projects/SearchAndSort/SearchAndSort/Content/wall.jpg</File>
+    <File>/Users/whitaker/Projects/SearchAndSort/SearchAndSort/Content/YellowTank.png</File>
+  </SourceFiles>
+</SourceFileCollection>
