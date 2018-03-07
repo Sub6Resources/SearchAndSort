@@ -302,14 +302,17 @@ namespace SearchAndSort
         
         private void BubbleSort()
         {
-            //Iterate through the static tanks
+            //If a tank is currently moving, then we don't need to move any tanks.
             for (var i = 0; i < enemyTanks.Count; i++)
             {
                 var staticTank = (StaticTank) enemyTanks[i];
                 if (staticTank.Moving)
                     return;
             }
-            for (var i = 0; i < enemyTanks.Count; i++)
+
+            
+            
+            for (var i = tankDoingBigMove; i < enemyTanks.Count; i++)
             {
                 var staticTank = (StaticTank) enemyTanks[i];
                 try
@@ -334,10 +337,12 @@ namespace SearchAndSort
                             tankDoingLittleMove = tankDoingBigMove + 1;
                             return;
                         }
+
+                        if (tankDoingBigMove == 0) return;
+                        ((StaticTank) enemyTanks[tankDoingBigMove]).SetTarget(movingTanksLocation);
                         doingBigMove = false;
                         doingLittleMove = false;
                         doneWithOneSort = false;
-                        ((StaticTank) enemyTanks[tankDoingBigMove]).SetTarget(movingTanksLocation);
                         return;
                     }
 
@@ -350,16 +355,33 @@ namespace SearchAndSort
                         EnemyTank tempTank = enemyTanks[tankDoingBigMove];
                         enemyTanks[tankDoingBigMove] = enemyTanks[tankDoingLittleMove];
                         enemyTanks[tankDoingLittleMove] = tempTank;
-                      
                         return;
                     }
                 }
                 catch (ArgumentOutOfRangeException)
                 {
+                    for (var j = 0; j < enemyTanks.Count; j++)
+                    {
+                        var _staticTank = (StaticTank) enemyTanks[j];
+                        try
+                        {
+                            if (!(_staticTank.strength < enemyTanks[j + 1].strength) || _staticTank.Moving)
+                            {
+                                break;
+                            }
+                        }
+                        catch (ArgumentOutOfRangeException e)
+                        {
+                            return;
+                        }
+                    }
+                    if (tankDoingBigMove == 0) return;
+                    ((StaticTank) enemyTanks[tankDoingBigMove]).SetTarget(movingTanksLocation);
                     doingBigMove = false;
                     doingLittleMove = false;
                     doneWithOneSort = false;
-                    ((StaticTank) enemyTanks[tankDoingBigMove]).SetTarget(movingTanksLocation);
+                    tankDoingBigMove = 0;
+                    tankDoingLittleMove = 0;
                     return;
                 }
             }

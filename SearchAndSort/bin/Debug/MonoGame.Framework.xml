@@ -7758,8 +7758,8 @@
             <summary>
             Deconstruction method for <see cref="T:Microsoft.Xna.Framework.Ray"/>.
             </summary>
-            <param name="position">Receives the start position of the ray.</param>
-            <param name="direction">Receives the direction of the ray.</param>
+            <param name="direction"></param>
+            <param name="position"></param>
         </member>
         <member name="T:Microsoft.Xna.Framework.Rectangle">
             <summary>

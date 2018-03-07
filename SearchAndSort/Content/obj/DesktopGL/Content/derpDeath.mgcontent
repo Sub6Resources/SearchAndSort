@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PipelineBuildEvent xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <SourceFile>/Users/whitaker/Projects/SearchAndSort/SearchAndSort/Content/derpDeath.wav</SourceFile>
-  <SourceTime>2018-02-09T11:49:50-07:00</SourceTime>
-  <DestFile>/Users/whitaker/Projects/SearchAndSort/SearchAndSort/Content/bin/DesktopGL/Content/derpDeath.xnb</DestFile>
-  <DestTime>2018-02-26T15:39:00-07:00</DestTime>
+  <SourceFile>/Users/59485/Projects/SearchAndSort/SearchAndSort/Content/derpDeath.wav</SourceFile>
+  <SourceTime>2018-01-22T08:47:45-07:00</SourceTime>
+  <DestFile>/Users/59485/Projects/SearchAndSort/SearchAndSort/Content/bin/DesktopGL/Content/derpDeath.xnb</DestFile>
+  <DestTime>2018-02-28T08:05:48-07:00</DestTime>
   <Importer>WavImporter</Importer>
-  <ImporterTime>2018-02-26T10:15:24-07:00</ImporterTime>
+  <ImporterTime>2018-02-20T07:28:26-07:00</ImporterTime>
   <Processor>SoundEffectProcessor</Processor>
-  <ProcessorTime>2018-02-26T10:15:24-07:00</ProcessorTime>
+  <ProcessorTime>2018-02-20T07:28:26-07:00</ProcessorTime>
   <Parameters>
     <Key>Quality</Key>
     <Value>Best</Value>
