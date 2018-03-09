@@ -23,6 +23,7 @@ namespace SearchAndSort
         private const float MINE_DELAY = 20f;
         public bool alive = true;
         public bool colliding;
+        public bool collidingIntoTank;
         public ParticleSpray deathParticles;
         public bool enemy = false;
         public Explosion explosion;
@@ -46,6 +47,8 @@ namespace SearchAndSort
         public Vector2 startingLocation;
         public Rectangle tankRect;
         public Texture2D tankTexture;
+
+        public Tank collidedTank = null;
 
         public Color color;
         
@@ -124,17 +127,28 @@ namespace SearchAndSort
                 updateRectangleLocation();
                 //Check collisions
                 colliding = false;
+                collidingIntoTank = false;
 
                 foreach (Tank tank in game.enemyTanks)
                 {
                     var collision = tank.isColliding(tankRect);
-                    if (collision.depth > 0) cancelOutCollisionOverlap(collision);
+                    if (collision.depth > 0)
+                    {
+                        collidedTank = tank;
+                        collidingIntoTank = true;
+                        cancelOutCollisionOverlap(collision);
+                    }
                 }
 
                 foreach (var tank in game.playerTanks)
                 {
                     var collision = tank.isColliding(tankRect);
-                    if (tank != this && collision.depth > 0) cancelOutCollisionOverlap(collision);
+                    if (tank != this && collision.depth > 0)
+                    {
+                        collidedTank = tank;
+                        collidingIntoTank = true;
+                        cancelOutCollisionOverlap(collision);
+                    }
                 }
 
                 foreach (var tiles in game.map.map)

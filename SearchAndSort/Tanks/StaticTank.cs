@@ -10,6 +10,7 @@ namespace SearchAndSort
         private SpriteFont spriteFont;
         public bool Moving = false;
         private Vector2 target;
+        private Vector2 tempTarget;
 
         public StaticTank()
         {
@@ -30,12 +31,22 @@ namespace SearchAndSort
         {
             if (Moving)
             {
-                Rotate(AimAt(target));
-                if (SlowlyMoveTo(target, gameTime))
+                if (colliding)
                 {
-                    //Called if tank is done moving
-                    Moving = false;
+                    tempTarget = target + new Vector2(0, target.X - location.X);
+                    SlowlyRotate(AimAt(tempTarget), gameTime);
+                    SlowlyMoveTo(tempTarget, gameTime);
                 }
+                else
+                {
+                    Rotate(AimAt(target));
+                    if (SlowlyMoveTo(target, gameTime))
+                    {
+                        //Called if tank is done moving
+                        Moving = false;
+                    }
+                }
+                
             }
             else {
                 SlowlyRotate(AimAt(game.playerTanks[0].location), gameTime);
