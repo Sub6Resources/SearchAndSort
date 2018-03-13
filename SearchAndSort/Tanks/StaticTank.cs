@@ -37,6 +37,20 @@ namespace SearchAndSort
                     SlowlyRotate(AimAt(tempTarget), gameTime);
                     SlowlyMoveTo(tempTarget, gameTime);
                 }
+
+                if (tempTarget != Vector2.Zero)
+                {
+                    Rotate(AimAt(tempTarget));
+                    if (SlowlyMoveTo(tempTarget, gameTime))
+                    {
+                        tempTarget = Vector2.Zero;
+                    }
+
+                    if (colliding)
+                    {
+                        tempTarget = Vector2.Zero;
+                    }
+                }
                 else
                 {
                     Rotate(AimAt(target));

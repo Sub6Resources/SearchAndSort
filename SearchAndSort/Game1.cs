@@ -17,8 +17,9 @@ namespace SearchAndSort
         private const int SEARCH_CIRCLE = 1;
         private const int SORT_LINE = 2;
         private const int SORT_LINE_SELECT = 3;
+        private const int SORT_LINE_INSERTION = 4;
 
-        private string[] listOfLevels = {"Linear Search O(n)", "Bubble Sort O(n^2)", "Selection Sort O(n^2)"};
+        private string[] listOfLevels = {"Linear Search O(n)", "Bubble Sort O(n^2)", "Selection Sort O(n^2)", "Insertion Sort O()"};
         
         private int gameState = MAIN_MENU;
         
@@ -260,6 +261,57 @@ namespace SearchAndSort
                         enemyTanks.Add(new StaticTank(this, Content.Load<Texture2D>("GreenTank"), new Vector2(pointX, pointY),
                             new Vector2(3,3), 0f, randy.Next(0, 100), 1));
                     }
+                    
+                    //Reset Variables
+                    selectSortCurrentIndex = 0;
+                    break;
+                case SORT_LINE_INSERTION:
+                    //Map
+                    var sortLineInsertMap =
+                        "11111111111111111111\n" +
+                        "10000000000000000001\n" +
+                        "10000001111110000001\n" +
+                        "10000010000001000001\n" +
+                        "10000100000000100001\n" +
+                        "10001000000000010001\n" +
+                        "10000000000000000001\n" +
+                        "10000000000000000001\n" +
+                        "10000000000000000001\n" +
+                        "10000000000000000001\n" +
+                        "10001000000000010001\n" +
+                        "10000100000000100001\n" +
+                        "10000010000001000001\n" +
+                        "10000001111110000001\n" +
+                        "10000000000000000001\n" +
+                        "11111111111111111111";
+                    map.setMap(sortLineInsertMap);
+                    //Initialize tanks
+                    playerTanks.Add(new Player(this, Content.Load<Texture2D>("GreenTank"), new Vector2(100, 100),
+                        new Vector2(3, 3), 0, 1, Color.Green, player1Controls));
+                    playerTanks.Add(new Player(this, Content.Load<Texture2D>("RedTank"),
+                        new Vector2(map.screenWidth - 100, 100), new Vector2(3, 3), MathHelper.Pi, 2, Color.Red, player2Controls));
+                    
+                    const int NUM_TANKSLINEINSERT= 8;
+
+            
+                    //Generate line of static tanks
+                    for (var i = 0; i < NUM_TANKSLINEINSERT; i++)
+                    {
+                        var centerX = graphics.PreferredBackBufferWidth / 2;
+                        var centerY = graphics.PreferredBackBufferHeight / 2;
+                        var margin = 100;
+                        var width = graphics.PreferredBackBufferWidth - 100;
+
+                        var pointX = margin + width / NUM_TANKSLINEINSERT * i;
+                        var pointY = centerY;
+                
+                        enemyTanks.Add(new StaticTank(this, Content.Load<Texture2D>("GreenTank"), new Vector2(pointX, pointY),
+                            new Vector2(3,3), 0f, randy.Next(0, 100), 1));
+                    }
+
+                    //Reset Variables
+                    insertionSortCurrentIndex = 0;
+                    innerInsertionSortLoopIndex = 0;
                     break;
             }
 
@@ -306,6 +358,8 @@ namespace SearchAndSort
                         Initialize(SORT_LINE);
                     if(state.IsKeyDown(Keys.D3))
                         Initialize(SORT_LINE_SELECT);
+                    if(state.IsKeyDown(Keys.D4))
+                        Initialize(SORT_LINE_INSERTION);
                     break;
                 case SEARCH_CIRCLE:
                     if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || state.IsKeyDown(Keys.Escape))
@@ -323,6 +377,12 @@ namespace SearchAndSort
                         Initialize(MAIN_MENU);
                     updateGame(gameTime, state);
                     SelectionSort();
+                    break;
+                case SORT_LINE_INSERTION:
+                    if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || state.IsKeyDown(Keys.Escape))
+                        Initialize(MAIN_MENU);
+                    updateGame(gameTime, state);
+                    InsertionSort();
                     break;
             }
             
@@ -355,12 +415,10 @@ namespace SearchAndSort
         
         private void BubbleSort()
         {
-            //If a tank is currently moving, then we don't need to move any tanks.
-            for (var i = 0; i < enemyTanks.Count; i++)
+            //If a tank is currently moving, then wait.
+            foreach (var tank in enemyTanks)
             {
-                var staticTank = (StaticTank) enemyTanks[i];
-                if (staticTank.Moving)
-                    return;
+                if (((StaticTank) tank).Moving) return;
             }
 
             
@@ -378,8 +436,7 @@ namespace SearchAndSort
                         tankDoingBigMove = i;
                         return;
                     }
-
-                    //if(california) is true
+                    
                     if (doingBigMove && !doingLittleMove)
                     {
                         if (enemyTanks[tankDoingBigMove].strength > enemyTanks[tankDoingBigMove + 1].strength)
@@ -441,24 +498,25 @@ namespace SearchAndSort
             }
         }
 
-        private int selectSortCurrentIndex = 0;
+        private int selectSortCurrentIndex;
         
+        //This function is called every update loop.
         private void SelectionSort()
         {
-            //If the outer loop value is above the count, return
+            //The outer loop is complete, so the sort is done.
             if (!(selectSortCurrentIndex < enemyTanks.Count)) return;
             
             //If a tank is currently moving, then wait.
             foreach (var tank in enemyTanks)
             {
-                var staticTank = (StaticTank) tank;
-                if (staticTank.Moving)
-                    return;
+                if (((StaticTank) tank).Moving) return;
             }
 
+            //Get min and mindex.
             var min = enemyTanks[selectSortCurrentIndex].strength;
             var mindex = selectSortCurrentIndex;
             
+            //Find the min and mindex
             for (int i = selectSortCurrentIndex; i < enemyTanks.Count; i++)
             {
                 if (enemyTanks[i].strength < min)
@@ -468,8 +526,50 @@ namespace SearchAndSort
                 }
             }
             
+            //Put the min at the front of the unsorted list.
             swapTankPositions(selectSortCurrentIndex, mindex);
+            
+            //Increment the outer loop.
             selectSortCurrentIndex++;
+        }
+
+        private int insertionSortCurrentIndex;
+        private int innerInsertionSortLoopIndex;
+        
+        //This function is called every update loop.
+        private void InsertionSort()
+        {
+            //Outer loop is completed, so the sort is done.
+            if (insertionSortCurrentIndex >= enemyTanks.Count) return;
+            
+            //If a tank is currently moving, then wait.
+            foreach (var tank in enemyTanks)
+            {
+                if (((StaticTank) tank).Moving) return;
+            }
+            
+            //Inner loop
+            //Starts where it left off before return (innerInsertionSortLoopIndex)
+            for (int start = innerInsertionSortLoopIndex; start > 0; start--)
+            {
+                //Updates innerInsertionSortLoopIndex to match the current iteration.
+                innerInsertionSortLoopIndex = start;
+                
+                //Compare strengths
+                if (enemyTanks[start].strength < enemyTanks[start - 1].strength)
+                {
+                    //Swap
+                    swapTankPositions(start, start - 1);
+                    
+                    //Return so that the tank can finish moving. (The loop will pick back up where it left off when the tank finishes moving)
+                    return;
+                }
+            }
+
+            //Increment the outer loop
+            insertionSortCurrentIndex++;
+            //Reset the inner loop
+            innerInsertionSortLoopIndex = insertionSortCurrentIndex;
         }
 
         private void swapTankPositions(int index1, int index2)
@@ -477,6 +577,7 @@ namespace SearchAndSort
             //If the tanks are the same tank, then nothing needs to happen.
             if (index1 == index2) return;
             
+            //Create some temporary variables to make it easier to work with StaticTank specific functions.
             var tank1 = (StaticTank) enemyTanks[index1];
             var tank2 = (StaticTank) enemyTanks[index2];
             
@@ -512,6 +613,9 @@ namespace SearchAndSort
                     drawGame(spriteBatch);
                     break;
                 case SORT_LINE_SELECT:
+                    drawGame(spriteBatch);
+                    break;
+                case SORT_LINE_INSERTION:
                     drawGame(spriteBatch);
                     break;
             }
