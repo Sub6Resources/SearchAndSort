@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -19,7 +21,7 @@ namespace SearchAndSort
         private const int SORT_LINE_SELECT = 3;
         private const int SORT_LINE_INSERTION = 4;
 
-        private string[] listOfLevels = {"Linear Search O(n)", "Bubble Sort O(n^2)", "Selection Sort O(n^2)", "Insertion Sort O()"};
+        private string[] listOfLevels = {"Linear Search O(n)", "Bubble Sort O(n^2)", "Selection Sort O(n^2)", "Insertion Sort O(n^2)"};
         
         private int gameState = MAIN_MENU;
         
@@ -42,6 +44,8 @@ namespace SearchAndSort
         private SpriteBatch spriteBatch;
         public Texture2D texture2d;
         public Menu menu;
+
+        private bool sorted = false;
 
         public Game1()
         {
@@ -106,6 +110,8 @@ namespace SearchAndSort
             playerTanks.Clear();
             enemyTanks.Clear();
             scoreManager.Reset();
+
+            sorted = false;
             //Initialize controls
             var player1Controls = new Controls(Keys.W, Keys.A, keyDown: Keys.S, keyRight: Keys.D, keyBoost: Keys.Tab,
                 keyReverse: Keys.LeftShift, keyFire: Keys.Space, keyExplode: Keys.E, keyMine: Keys.Q,
@@ -192,7 +198,7 @@ namespace SearchAndSort
                     playerTanks.Add(new Player(this, Content.Load<Texture2D>("RedTank"),
                         new Vector2(map.screenWidth - 100, 100), new Vector2(3, 3), MathHelper.Pi, 2, Color.Red, player2Controls));
                     
-                    const int NUM_TANKSLINE = 16;
+                    const int NUM_TANKSLINE = 8;
 
             
                     //Generate line of static tanks
@@ -244,7 +250,7 @@ namespace SearchAndSort
                     playerTanks.Add(new Player(this, Content.Load<Texture2D>("RedTank"),
                         new Vector2(map.screenWidth - 100, 100), new Vector2(3, 3), MathHelper.Pi, 2, Color.Red, player2Controls));
                     
-                    const int NUM_TANKSLINESELECT = 16;
+                    const int NUM_TANKSLINESELECT = 10;
 
             
                     //Generate line of static tanks
@@ -385,6 +391,19 @@ namespace SearchAndSort
                     InsertionSort();
                     break;
             }
+
+            if (isSorted(enemyTanks.ToArray()))
+            {
+                sorted = true;
+            }
+            
+            if (state.IsKeyDown(Keys.B))
+            {
+                if (sorted)
+                {
+                    BinarySearch();
+                }
+            }
             
             //Update base
             base.Update(gameTime);
@@ -412,6 +431,17 @@ namespace SearchAndSort
         private int tankDoingBigMove;
         private int tankDoingLittleMove;
         private Vector2 movingTanksLocation;
+
+        private bool isSorted(EnemyTank[] listOfTanks)
+        {
+            for (int i = 1; i < listOfTanks.Length; i++)
+            {
+                if (!(listOfTanks[i].strength > listOfTanks[i - 1].strength))
+                    return false;
+            }
+
+            return true;
+        }
         
         private void BubbleSort()
         {
@@ -570,6 +600,74 @@ namespace SearchAndSort
             insertionSortCurrentIndex++;
             //Reset the inner loop
             innerInsertionSortLoopIndex = insertionSortCurrentIndex;
+        }
+
+        private int min = 0;
+        private int max = 0;
+        private bool started = false;
+        private int target = 20;
+
+        private void BinarySearch()
+        {
+            //If a tank is currently moving, then wait.
+            foreach (var tank in enemyTanks)
+            {
+                if (((StaticTank) tank).Moving)
+                {
+                    Console.WriteLine("Moving...");
+                    return;
+                }
+            }
+
+            if (!started)
+            {
+                max = enemyTanks.Count - 1;
+                for (var i = 0; i < enemyTanks.Count; i++)
+                {
+                    ((StaticTank) enemyTanks[i]).SetTarget(enemyTanks[i].location - new Vector2(0, 30));
+                }
+
+                started = true;
+                return;
+            }
+
+
+            int count = (max - min) / 2 + min;
+            Console.WriteLine("Count: " + count);
+            if (enemyTanks[count].strength == target)
+            {
+                Console.WriteLine("DONE!!!!");
+                return;
+            }
+            else if (max == min)
+            {
+                Console.WriteLine("Max == Min");
+                Console.WriteLine("So probably nothing");
+                return;
+            }
+            else if (target > enemyTanks[count].strength)
+            {
+                Console.WriteLine("GT");
+                for (int i = min; i <= count; i++)
+                {
+                    ((StaticTank) enemyTanks[i]).SetTarget(enemyTanks[i].location + new Vector2(0, 30));
+                }
+
+                min = count + 1;
+                return;
+            } else if (target < enemyTanks[count].strength)
+            {
+                Console.WriteLine("LT");
+                for (int i = count; i <= max; i++)
+                {
+                    ((StaticTank) enemyTanks[i]).SetTarget(enemyTanks[i].location + new Vector2(0, 30));
+                }
+
+                max = count - 1;
+                return;
+            }
+            Console.WriteLine("Nothing?");
+            
         }
 
         private void swapTankPositions(int index1, int index2)

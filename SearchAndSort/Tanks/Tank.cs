@@ -129,7 +129,7 @@ namespace SearchAndSort
                 colliding = false;
                 collidingIntoTank = false;
 
-                foreach (Tank tank in game.enemyTanks)
+                foreach (EnemyTank tank in game.enemyTanks)
                 {
                     var collision = tank.isColliding(tankRect);
                     if (collision.depth > 0)

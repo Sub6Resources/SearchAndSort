@@ -35,7 +35,6 @@ namespace SearchAndSort
                 {
                     tempTarget = target + new Vector2(0, target.X - location.X);
                     SlowlyRotate(AimAt(tempTarget), gameTime);
-                    SlowlyMoveTo(tempTarget, gameTime);
                 }
 
                 if (tempTarget != Vector2.Zero)
