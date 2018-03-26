@@ -44,6 +44,7 @@ namespace SearchAndSort
         private SpriteBatch spriteBatch;
         public Texture2D texture2d;
         public Menu menu;
+        private SpriteFont spriteFont;
 
         private bool sorted = false;
 
@@ -66,6 +67,8 @@ namespace SearchAndSort
             texture2d = new Texture2D(GraphicsDevice, 1, 1);
             texture2d.SetData(new[] {Color.White});
 
+            IsMouseVisible = true;
+
             //Initialize window
             //SWITCH COMMENTS TO TOGGLE FULLSCREEN
             //graphics.PreferredBackBufferWidth = GraphicsDevice.DisplayMode.Width - GraphicsDevice.DisplayMode.Width % 48; //Makes the window size a divisor of 48 so the tiles fit more cleanly.
@@ -82,7 +85,7 @@ namespace SearchAndSort
             //Initialize window background
             background = Content.Load<Texture2D>("Stars");
 
-            
+            spriteFont = Content.Load<SpriteFont>("score");
 //            enemyTanks.Add(new EnemyTank(this, Content.Load<Texture2D>("PinkTank"), new Vector2(200, 200), new Vector2(5, 5), 0, 100, 1));
 //            enemyTanks.Add(new KamikazeTank(this, Content.Load<Texture2D>("YellowTank"), new Vector2(400, 400), new Vector2(3, 3), 0, 3));
 //            enemyTanks.Add(new StaticTank(this, Content.Load<Texture2D>("YellowTank"), new Vector2(300, 300), new Vector2(3, 3), 0, 3));
@@ -121,6 +124,12 @@ namespace SearchAndSort
                 keyMine: Keys.OemQuestion, keySearch: Keys.OemComma);
 
             Random randy = new Random();
+            
+            min = 0;
+            max = 0;
+            started = false;
+            target = 70;
+            done = false;
             
             switch (level)
             {
@@ -343,6 +352,9 @@ namespace SearchAndSort
             //Eh, whatever. Maybe do this later.
         }
 
+
+        private MouseState lastMouseState;
+        private MouseState currentMouseState;
         /// <summary>
         ///     Allows the game to run logic such as updating the world,
         ///     checking for collisions, gathering input, and playing audio.
@@ -351,6 +363,23 @@ namespace SearchAndSort
         protected override void Update(GameTime gameTime)
         {
             var state = Keyboard.GetState();
+            // The active state from the last frame is now old
+            lastMouseState = currentMouseState;
+            currentMouseState = Mouse.GetState();
+            // Recognize a single click of the left mouse button
+            if (lastMouseState.LeftButton == ButtonState.Released && currentMouseState.LeftButton == ButtonState.Pressed)
+            {
+                // React to the click
+                // ...
+                foreach (var tank in enemyTanks)
+                {
+                    if (tank.isColliding(new Rectangle(currentMouseState.Position.X, currentMouseState.Position.Y,
+                            25, 25)).depth > 0)
+                    {
+                        target = tank.strength;
+                    }
+                }
+            }
             
             //Level Logic
             switch (gameState)
@@ -436,7 +465,7 @@ namespace SearchAndSort
         {
             for (int i = 1; i < listOfTanks.Length; i++)
             {
-                if (!(listOfTanks[i].strength > listOfTanks[i - 1].strength))
+                if (!(listOfTanks[i].strength >= listOfTanks[i - 1].strength))
                     return false;
             }
 
@@ -605,7 +634,8 @@ namespace SearchAndSort
         private int min = 0;
         private int max = 0;
         private bool started = false;
-        private int target = 20;
+        private int target = 70;
+        private bool done = false;
 
         private void BinarySearch()
         {
@@ -637,13 +667,30 @@ namespace SearchAndSort
             if (enemyTanks[count].strength == target)
             {
                 Console.WriteLine("DONE!!!!");
+                for (var i = 0; i < enemyTanks.Count; i++)
+                {
+                    if (i != count)
+                    {
+                        ((StaticTank) enemyTanks[i]).Explode();
+                    }
+                }
+
                 return;
             }
-            else if (max == min)
+            else if (max == min && !done)
             {
                 Console.WriteLine("Max == Min");
                 Console.WriteLine("So probably nothing");
+                ((StaticTank) enemyTanks[min]).SetTarget(enemyTanks[min].location + new Vector2(0, 30));
+                done = true;
                 return;
+            }
+            else if (done)
+            {
+                foreach (var t in enemyTanks)
+                {
+                    ((StaticTank) t).Explode();
+                }
             }
             else if (target > enemyTanks[count].strength)
             {
@@ -741,6 +788,15 @@ namespace SearchAndSort
 
             //Draw score
             scoreManager.Draw(spriteBatch);
+
+            spriteBatch.DrawString(
+                spriteFont,
+                "Binary Search will target a strength of " + target,
+                new Vector2(48, 10),
+                Color.WhiteSmoke);
+
+//            spriteBatch.Draw(background, new Rectangle(currentMouseState.Position.X, currentMouseState.Position.Y,
+//                25, 25), Color.White);
         }
     }
 }

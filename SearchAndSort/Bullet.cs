@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace SearchAndSort
@@ -58,28 +59,49 @@ namespace SearchAndSort
                             (int) et.location.Y - et.tankTexture.Height / 2, et.tankTexture.Width,
                             et.tankTexture.Height)).Width != 0 && et.alive && player != 100)
                 {
-                    et.Hit();
-                    game.scoreManager.addScore(player, pointsOnHit);
-                    if (!et.alive) game.scoreManager.addScore(player, pointsOnKill);
-                    Die();
+                    try
+                    {
+                        et.Hit();
+                        game.scoreManager.addScore(player, pointsOnHit);
+                        if (!et.alive) game.scoreManager.addScore(player, pointsOnKill);
+                        Die();
+                    }
+                    catch (ArgumentOutOfRangeException e)
+                    {
+                        //This catches the case where multiple tanks explode at the same time and the shrapnel hits the other exploding tank.
+                    }
                 }
 
             foreach (var tank in game.playerTanks)
             {
                 if (tank.player != player && Rectangle.Intersect(bulletRect, tank.tankRect).Width != 0 && tank.alive)
                 {
-                    tank.Hit();
-                    game.scoreManager.addScore(player, pointsOnHit);
-                    if (!tank.alive) game.scoreManager.addScore(player, pointsOnKill);
-                    Die();
+                    try
+                    {
+                        tank.Hit();
+                        game.scoreManager.addScore(player, pointsOnHit);
+                        if (!tank.alive) game.scoreManager.addScore(player, pointsOnKill);
+                        Die();
+                    }
+                    catch (ArgumentOutOfRangeException e)
+                    {
+                        //This catches the case where multiple tanks explode at the same time and the shrapnel hits a player.
+                    }
                 }
 
                 if (player == 100 && Rectangle.Intersect(bulletRect, tank.tankRect).Width != 0 && tank.alive)
                 {
-                    tank.Hit();
-                    game.scoreManager.addScore(0, pointsOnHit);
-                    if (!tank.alive) game.scoreManager.addScore(0, pointsOnKill);
-                    Die();
+                    try
+                    {
+                        tank.Hit();
+                        game.scoreManager.addScore(0, pointsOnHit);
+                        if (!tank.alive) game.scoreManager.addScore(0, pointsOnKill);
+                        Die();
+                    }
+                    catch (ArgumentOutOfRangeException e)
+                    {
+                        //This catches the case where multiple tanks explode at the same time and the shrapnel hits the other exploding tank.
+                    }
                 }
             }
 

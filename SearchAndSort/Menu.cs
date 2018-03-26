@@ -33,6 +33,11 @@ namespace SearchAndSort
                 spriteBatch.DrawString(spriteFont, (i+1) + " - " + _levelStrings[i],
                     new Vector2(100, 164 + 20 * i), Color.Black);
             }
+            
+            spriteBatch.DrawString(spriteFont, "Once the tanks are sorted, hold B to do a binary search", new Vector2(300, 175),
+                Color.Purple, 0, Vector2.Zero, 1, SpriteEffects.None, 1f);
+            spriteBatch.DrawString(spriteFont, "Click on a tank to target it in the binary search", new Vector2(300, 200),
+                Color.Purple, 0, Vector2.Zero, 1, SpriteEffects.None, 1f);
         }
     }
 }
